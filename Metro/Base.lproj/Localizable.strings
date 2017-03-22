@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  Metro
+
+  Created by Eduardo Valencia on 2/19/17.
+  Copyright © 2017 Eduardo Valencia. All rights reserved.
+*/
+"arriving at" = "Arriving at";
+"departingFrom" = "Departing from";
+"line" = "Line";
+"metro" = "Metro";
+"slogan" = "The app to get from point A to B faster.";
+"welcomeTo" = "Welcome to";
+

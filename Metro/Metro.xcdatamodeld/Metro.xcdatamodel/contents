@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16D32" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Line" representedClassName="Line" syncable="YES" codeGenerationType="category">
+        <attribute name="colors" attributeType="Binary" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="serviceTypeRaw" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" customClassName="ServiceType" syncable="YES"/>
+        <relationship name="lineEnds" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Station" inverseName="lineEnds" inverseEntity="Station" syncable="YES"/>
+        <relationship name="stations" toMany="YES" deletionRule="Nullify" destinationEntity="Station" inverseName="lines" inverseEntity="Station" syncable="YES"/>
+    </entity>
+    <entity name="Station" representedClassName="Station" syncable="YES" codeGenerationType="category">
+        <attribute name="isLineEnd" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="statusRaw" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" customClassName="Status" syncable="YES"/>
+        <relationship name="lineEnds" maxCount="1" deletionRule="Nullify" destinationEntity="Line" inverseName="lineEnds" inverseEntity="Line" syncable="YES"/>
+        <relationship name="lines" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Line" inverseName="stations" inverseEntity="Line" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Station" positionX="-261" positionY="366" width="128" height="118"/>
+        <element name="Line" positionX="-27" positionY="342" width="128" height="118"/>
+    </elements>
+</model>
