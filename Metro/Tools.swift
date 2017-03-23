@@ -228,18 +228,18 @@ class Tools: NSObject {
      */
     static func createStationCircle(station: Station, cornerRadius: CGFloat) -> UIView {
         let circle = UIView()
-        /*circle.translatesAutoresizingMaskIntoConstraints = false
+        circle.translatesAutoresizingMaskIntoConstraints = false
         circle.backgroundColor = .red
         circle.layer.cornerRadius = cornerRadius
-        
-        let numberLabel = createLabel(text: String(station.lines[0].name), textAlignment: .center, textColor: colorPicker(1, alpha: 1), font: UIFont.systemFont(ofSize: 15, weight: UIFontWeightMedium))
+        let name = (station.lines?[0] as? Line)?.name ?? ""
+        let numberLabel = createLabel(text: name, textAlignment: .center, textColor: colorPicker(1, alpha: 1), font: UIFont.systemFont(ofSize: 15, weight: UIFontWeightMedium))
         circle.addSubview(numberLabel)
         
         // Add numberLabel Constraints
         let numberLabelCenterX = NSLayoutConstraint(item: circle, attribute: .centerX, relatedBy: .equal, toItem: numberLabel, attribute: .centerX, multiplier: 1, constant: 0)
         let numberLabelCenterY = NSLayoutConstraint(item: circle, attribute: .centerY, relatedBy: .equal, toItem: numberLabel, attribute: .centerY, multiplier: 1, constant: 0)
         circle.addConstraint(numberLabelCenterX)
-        circle.addConstraint(numberLabelCenterY)*/
+        circle.addConstraint(numberLabelCenterY)
         
         return circle
     }

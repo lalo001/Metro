@@ -10,8 +10,10 @@ import UIKit
 import CoreData
 
 class Station: NSManagedObject {
+    
+    /// These constants specify the status of the station.
     public enum Status: Int {
-        case open = 0, closed, maintenance
+        case open = 0, closed, inMaintenance
     }
     
     var status: Status {
@@ -23,31 +25,38 @@ class Station: NSManagedObject {
         }
     }
     
-    /*
-    var lines: [Line] = []
-    let name: String
-    let status: Status
-    let isLineEnd: Bool
     var serviceTypes: [Line.ServiceType] {
         get {
             var _serviceTypes: [Line.ServiceType] = []
-            for line in lines {
-                if !_serviceTypes.contains(line.serviceType) {
-                    _serviceTypes.append(line.serviceType)
+            if let lines = self.lines {
+                for line in lines {
+                    if let line = line as? Line {
+                        if !_serviceTypes.contains(line.serviceType) {
+                            _serviceTypes.append(line.serviceType)
+                        }
+                    }
                 }
             }
             return _serviceTypes
         }
     }
     
-    public enum Status: Int {
-        case open = 0, closed, maintenance
-    }
-    
-    init(name: String, status: Status, isLineEnd: Bool) {
+    /**
+    Create a new station managed object.
+    - parameters:
+        - name: The station name String.
+        - status: The station status constant.
+        - isLineEnd: A boolean that indicates wether the station is the end of any line.
+        - hasRestroom: A boolean that indicates
+    */
+    convenience init(name: String, status: Status, isLineEnd: Bool, hasRestroom: Bool, hasComputers: Bool, hasPOI: Bool, context: NSManagedObjectContext?) {
+        self.init(entity: Station.entity(), insertInto: context)
         self.name = name
         self.status = status
         self.isLineEnd = isLineEnd
-    }*/
+        self.hasRestroom = hasRestroom
+        self.hasComputers = hasComputers
+        self.hasPOI = hasPOI
+    }
     
 }

@@ -171,14 +171,6 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             self?.leftContainerView = nil
         })
     }
-    
-    // MARK: - HOLA
 
-}
-
-extension String {
-    func obtenMayor() {
-        
-    }
 }
 

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class SearchRouteViewController: UIViewController {
     
@@ -39,17 +40,56 @@ class SearchRouteViewController: UIViewController {
         self.view.addConstraints(firstStationLabelVerticalConstraints)
         
         // FIXME: Delete this test station
-        /*
-        //let testLine = Line(name: "2", serviceType: .subway)
-        //let testStation = Station(name: "Tasqueña", status: .open, isLineEnd: false)
-        //testLine.addStation(station: testStation)
+        // MARK: - Core Data Demo
+        var shouldUpdate: Bool = false // This would be given the value the API returns
+        guard let managedContext = CoreDataTools.getContext() else { // In CoreDataTools there's a function that returns you the context.
+            return
+        }
         
+        var testLine: Line
+        var testStation: Station?
+        
+        let fetchRequest = NSFetchRequest<Line>(entityName: "Line") // Begin a fetch on Line
+        let predicate = NSPredicate(format: "name = %@", "2") // Predicate so that we are looking for Lines named '2'
+        fetchRequest.predicate = predicate // Assign the predicate to the fetch
+        do {
+            let fetchedResult = try managedContext.fetch(fetchRequest) // Execute the fetch and save the results
+            if fetchedResult.count == 0 {
+                shouldUpdate = true
+                print("New.")
+            } else {
+                print("Already added. Count: \(fetchedResult.count)")
+                if let line = fetchedResult.first, let station = fetchedResult.first?.stations?.allObjects[0] as? Station {
+                    testLine = line
+                    testStation = station
+                }
+            }
+        } catch let error {
+            print(error.localizedDescription)
+        }
+        if shouldUpdate {
+            // In case we need to update
+            testLine = Line(name: "2", serviceType: .lightRail, context: managedContext) // Call Line convenience init. This a custom init.
+            testStation = Station(name: "Taxqueña", status: .open, isLineEnd: true, hasRestroom: true, hasComputers: false, hasPOI: false, context: managedContext) // Call Station convenience init.
+            guard let testStation = testStation else {
+                return
+            }
+            testLine.addStation(station: testStation)
+            do {
+                try managedContext.save() // Save the changes. This is key.
+                print("\(testLine.description) saved.")
+            } catch let error {
+                print(error)
+            }
+        }
+        guard let unwrappedStation = testStation else {
+            return
+        }
         let circleSize: CGFloat = 25
         // To achieve a circle the cornerRadius must be half of the square size.
         let cornerRadius: CGFloat = circleSize/2
-        
         // Create firstStationCircle
-        let firstStationCircle = Tools.createStationCircle(station: testStation, cornerRadius: cornerRadius)
+        let firstStationCircle = Tools.createStationCircle(station: unwrappedStation, cornerRadius: cornerRadius)
         self.view.addSubview(firstStationCircle)
         
         // Add firstStationCircle Constraints
@@ -69,7 +109,6 @@ class SearchRouteViewController: UIViewController {
         self.view.addConstraints(secondLineLabelVerticalConstraints)
         
         // Create secondStationLabel*/
-        
     }
 
     override func viewDidLoad() {

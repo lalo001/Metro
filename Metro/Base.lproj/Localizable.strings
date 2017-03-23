@@ -7,8 +7,12 @@
 */
 "arriving at" = "Arriving at";
 "departingFrom" = "Departing from";
+"lightTrain" = "Light Train";
 "line" = "Line";
 "metro" = "Metro";
 "slogan" = "The app to get from point A to B faster.";
+"suburbanTrain" = "Suburban Train";
+"subway" = "Subway";
+"unknown" = "Unknown";
 "welcomeTo" = "Welcome to";
 

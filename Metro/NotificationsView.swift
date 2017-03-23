@@ -24,5 +24,12 @@ class NotificationsView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .red
+        let button = UIButton(type: .system)
+        button.frame = CGRect(x: 30, y: 30, width: 50, height: 21)
+        button.setTitle("Hola", for: .normal)
+        button.addTarget(ViewController(), action: #selector(ViewController.presentTabBar(_:)), for: .touchUpInside)
+        self.addSubview(button)
     }
+    
 }
