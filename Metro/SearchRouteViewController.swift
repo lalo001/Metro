@@ -12,7 +12,10 @@ import CoreData
 class SearchRouteViewController: UIViewController {
     
     var fromStation: Station?
-    var fromButton: UIButton!
+    var fromButtonContainer: UIView!
+    var fromCirclesContainer: UIView!
+    var toButtonContainer: UIView!
+    var toCirclesContainer: UIView!
     
     override func loadView() {
         super.loadView()
@@ -26,39 +29,30 @@ class SearchRouteViewController: UIViewController {
         self.view.addSubview(originLabel)
         
         // Add originLabel Constraints
-        let originLabelHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[originLabel]", options: NSLayoutFormatOptions(), metrics: nil, views: ["originLabel" : originLabel])
+        let originLabelHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-leftMargin-[originLabel]", options: NSLayoutFormatOptions(), metrics: ["leftMargin" : Constant.StationPicker.leftMarginSeparation], views: ["originLabel" : originLabel])
         let originLabelVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-30-[originLabel]", options: NSLayoutFormatOptions(), metrics: nil, views: ["originLabel" : originLabel])
         self.view.addConstraints(originLabelHorizontalConstraints)
         self.view.addConstraints(originLabelVerticalConstraints)
         
         //FIXME: Delete testStation
-        let testStation = coreDataDemo()
-        fromButton = UIObjects.createPickerButton(for: testStation!, inside: self.view, topConstant: 5, topObject: originLabel)
+        let results = coreDataDemo()
         
-        let circleSize: CGFloat = 25
-        // To achieve a circle the cornerRadius must be half of the square size.
-        let cornerRadius: CGFloat = circleSize/2
-        // Create firstStationCircle
-        /*let firstStationCircle = UIObjects.createStationCircle(station: testStation!, cornerRadius: cornerRadius)
-        self.view.addSubview(firstStationCircle)
+        // Create fromButtonContainer
+        fromButtonContainer = UIObjects.createPickerButton(for: results.1!, inside: self.view, with: 5, to: originLabel, target: self, action: #selector(self.stationButtonTouched(_:)))
+        results.0?.colors = [Tools.colorPicker(5, alpha: 1)] // FIXME: Delete
         
-        // Add firstStationCircle Constraints
-        let firstStationCircleHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[firstStationCircle(circleSize)]", options: NSLayoutFormatOptions(), metrics: ["circleSize" : circleSize], views: ["firstStationCircle" : firstStationCircle])
-        let firstStationCircleHeight = NSLayoutConstraint(item: firstStationCircle, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: circleSize)
-        let firstStationCenterY = NSLayoutConstraint(item: firstStationLabel, attribute: .centerY, relatedBy: .equal, toItem: firstStationCircle, attribute: .centerY, multiplier: 1, constant: 0)
-        self.view.addConstraints(firstStationCircleHorizontalConstraints)
-        self.view.addConstraint(firstStationCircleHeight)
-        self.view.addConstraint(firstStationCenterY)
+        // Create destinationLabel
+        let destinationLabel = UIObjects.createLabel(text: NSLocalizedString("destination", comment: "").uppercased(), textAlignment: .left, textColor: Constant.StationPicker.pickerTitleColor, font: Constant.StationPicker.pickerTitleFont)
+        self.view.addSubview(destinationLabel)
         
-        // Create secondLineLabel
-        let secondLineLabel = UIObjects.createLabel(text: "\(NSLocalizedString("line", comment: "")) 1", textAlignment: .left, textColor: Constant.Labels.subtitleLabelColor, font: UIFont.systemFont(ofSize: 17, weight: UIFontWeightMedium))
-        self.view.addSubview(secondLineLabel)
+        // Add destinationLabel Constraints
+        let destinationLabelVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[fromButtonContainer]-30-[destinationLabel]", options: .alignAllLeft, metrics: nil, views: ["fromButtonContainer" : fromButtonContainer, "destinationLabel" : destinationLabel])
+        self.view.addConstraints(destinationLabelVerticalConstraints)
         
-        // Add secondLineLabel Constraints
-        let secondLineLabelVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[firstStationLabel]-20-[secondLineLabel]", options: .alignAllLeft, metrics: nil, views: ["firstStationLabel" : firstStationLabel, "secondLineLabel" : secondLineLabel])
-        self.view.addConstraints(secondLineLabelVerticalConstraints)
-        
-        // Create secondStationLabel*/
+        // Create toButtonContainer
+        let station = Station(name: "Tasqueña", status: .open, isLineEnd: true, hasRestroom: true, hasComputers: false, hasPOI: false, context: CoreDataTools.getContext())
+        station.addToLines(results.0!)
+        toButtonContainer = UIObjects.createPickerButton(for: station, inside: self.view, with: 5, to: destinationLabel, target: self, action: #selector(self.stationButtonTouched(_:)))
     }
 
     override func viewDidLoad() {
@@ -72,14 +66,34 @@ class SearchRouteViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func coreDataDemo() -> Station? {
+    override var shouldAutorotate: Bool {
+        return false
+    }
+    /*
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let inset: CGFloat = toButton.frame.width - (toButton.titleLabel?.frame.width ?? 0) - (toButton.imageView?.frame.width ?? 0)
+        print("Inset: \(inset)")
+        toButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        toButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: -inset)
+        toButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: inset)
+    }*/
+    
+    // MARK: - Custom Functions
+    
+    func stationButtonTouched(_ sender: PickerButton) {
+        print("Station touched.")
+    }
+    
+    // FIXME: Delete
+    func coreDataDemo() -> (Line?, Station?) {
         // MARK: - Core Data Demo
         var shouldUpdate: Bool = false // This would be given the value the API returns
         guard let managedContext = CoreDataTools.getContext() else { // In CoreDataTools there's a function that returns you the context.
-            return nil
+            return (nil, nil)
         }
         
-        var testLine: Line
+        var testLine: Line?
         var testStation: Station?
         
         let fetchRequest = NSFetchRequest<Line>(entityName: "Line") // Begin a fetch on Line
@@ -105,20 +119,21 @@ class SearchRouteViewController: UIViewController {
             testLine = Line(name: "2", serviceType: .lightRail, context: managedContext) // Call Line convenience init. This a custom init.
             testStation = Station(name: "Etiopía / Plaza de la transparencia", status: .open, isLineEnd: true, hasRestroom: true, hasComputers: false, hasPOI: false, context: managedContext) // Call Station convenience init.
             guard let testStation = testStation else {
-                return nil
+                return (nil, nil)
             }
-            testLine.addStation(station: testStation)
+            testLine?.addStation(station: testStation)
             do {
                 try managedContext.save() // Save the changes. This is key.
-                print("\(testLine.description) saved.")
+                print("\(testLine!.description) saved.") // FIXME: Delete
             } catch let error {
                 print(error)
             }
         }
-        guard let unwrappedStation = testStation else {
-            return nil
+        
+        guard let unwrappedLine = testLine, let unwrappedStation = testStation else {
+            return (nil, nil)
         }
-        return unwrappedStation
+        return (unwrappedLine, unwrappedStation)
     }
 
     /*

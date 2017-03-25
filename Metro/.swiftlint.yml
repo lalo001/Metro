@@ -2,3 +2,8 @@ disabled_rules:
 - trailing_whitespace
 - line_length
 force_try: error
+function_parameter_count:
+- 6 #warning
+function_body_length:
+- 70 #warning
+

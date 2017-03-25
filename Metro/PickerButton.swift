@@ -19,7 +19,9 @@ class PickerButton: UIButton {
     */
     
     override var intrinsicContentSize: CGSize {
-        return titleLabel?.intrinsicContentSize ?? .zero
+        let titleWidth = titleLabel?.intrinsicContentSize.width ?? 0
+        let imageWidth = imageView?.intrinsicContentSize.width ?? 0
+        let size = CGSize(width: titleWidth + imageWidth + contentEdgeInsets.left + contentEdgeInsets.right, height: (titleLabel?.intrinsicContentSize.height ?? 0) + titleEdgeInsets.top + titleEdgeInsets.bottom + contentEdgeInsets.top + contentEdgeInsets.bottom)
+        return size
     }
-
 }
