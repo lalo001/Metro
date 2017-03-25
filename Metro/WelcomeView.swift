@@ -83,7 +83,7 @@ class WelcomeView: UIView {
         self.addConstraints(overlayViewVerticalConstraints)
         
         // Create welcomeToLabel
-        let welcomeToLabel = Tools.createLabel(text: NSLocalizedString("welcomeTo", comment: ""), textAlignment: .left, textColor: Constant.labels.subtitleLabelColor, font: UIFont.systemFont(ofSize: 22, weight: UIFontWeightMedium))
+        let welcomeToLabel = UIObjects.createLabel(text: NSLocalizedString("welcomeTo", comment: ""), textAlignment: .left, textColor: Constant.Labels.subtitleLabelColor, font: UIFont.systemFont(ofSize: 22, weight: UIFontWeightMedium))
         overlayView.addSubview(welcomeToLabel)
         
         // Add welcomeToLabel Constraints
@@ -93,7 +93,7 @@ class WelcomeView: UIView {
         overlayView.addConstraint(welcomeToLabelVerticalConstraints)
         
         // Create metroLabel
-        let metroLabel = Tools.createLabel(text: NSLocalizedString("metro", comment: "").uppercased(), textAlignment: .left, textColor: Constant.labels.titleLabelColor, font: UIFont.systemFont(ofSize: 64, weight: UIFontWeightHeavy))
+        let metroLabel = UIObjects.createLabel(text: NSLocalizedString("metro", comment: "").uppercased(), textAlignment: .left, textColor: Constant.Labels.titleLabelColor, font: UIFont.systemFont(ofSize: 64, weight: UIFontWeightHeavy))
         overlayView.addSubview(metroLabel)
         
         // Add metroLabel Constraints
@@ -101,7 +101,7 @@ class WelcomeView: UIView {
         overlayView.addConstraints(metroLabelVerticalConstraints)
         
         // Create sloganLabel
-        let sloganLabel = Tools.createLabel(text: NSLocalizedString("slogan", comment: ""), textAlignment: .left, textColor: Constant.labels.subtitleLabelColor, font: UIFont.systemFont(ofSize: 17, weight: UIFontWeightMedium))
+        let sloganLabel = UIObjects.createLabel(text: NSLocalizedString("slogan", comment: ""), textAlignment: .left, textColor: Constant.Labels.subtitleLabelColor, font: UIFont.systemFont(ofSize: 17, weight: UIFontWeightMedium))
         // With this property set to 0 text will wrap
         sloganLabel.numberOfLines = 0
         overlayView.addSubview(sloganLabel)

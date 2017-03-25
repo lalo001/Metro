@@ -26,19 +26,17 @@ class Station: NSManagedObject {
     }
     
     var serviceTypes: [Line.ServiceType] {
-        get {
-            var _serviceTypes: [Line.ServiceType] = []
-            if let lines = self.lines {
-                for line in lines {
-                    if let line = line as? Line {
-                        if !_serviceTypes.contains(line.serviceType) {
-                            _serviceTypes.append(line.serviceType)
-                        }
+        var _serviceTypes: [Line.ServiceType] = []
+        if let lines = self.lines {
+            for line in lines {
+                if let line = line as? Line {
+                    if !_serviceTypes.contains(line.serviceType) {
+                        _serviceTypes.append(line.serviceType)
                     }
                 }
             }
-            return _serviceTypes
         }
+        return _serviceTypes
     }
     
     /**

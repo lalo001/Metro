@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2001D8501E5AD8A0008C630C /* Train.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2001D84F1E5AD8A0008C630C /* Train.mp4 */; };
+		2007B0CB1E84BC7800655282 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 2007B0CA1E84BC7800655282 /* .swiftlint.yml */; };
+		2007B0CE1E84C6DD00655282 /* UIObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2007B0CD1E84C6DD00655282 /* UIObjects.swift */; };
 		2014BFA31E5BF80D00C47D18 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2014BFA21E5BF80D00C47D18 /* Line.swift */; };
 		2034943C1E5A2939001B9F7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2034943B1E5A2939001B9F7C /* AppDelegate.swift */; };
 		2034943E1E5A2939001B9F7C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2034943D1E5A2939001B9F7C /* ViewController.swift */; };
@@ -26,10 +28,13 @@
 		20610E811E5B73F700BA6700 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20610E801E5B73F700BA6700 /* MainTabBarViewController.swift */; };
 		20610E831E5B7DCE00BA6700 /* Station.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20610E821E5B7DCE00BA6700 /* Station.swift */; };
 		20610E851E5B974200BA6700 /* Graveyard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20610E841E5B974200BA6700 /* Graveyard.swift */; };
+		2099860F1E8635180025C3E3 /* PickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2099860E1E8635180025C3E3 /* PickerButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2001D84F1E5AD8A0008C630C /* Train.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Train.mp4; sourceTree = "<group>"; };
+		2007B0CA1E84BC7800655282 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
+		2007B0CD1E84C6DD00655282 /* UIObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIObjects.swift; sourceTree = "<group>"; };
 		2014BFA21E5BF80D00C47D18 /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		203494381E5A2939001B9F7C /* Metro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Metro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2034943B1E5A2939001B9F7C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -50,6 +55,7 @@
 		20610E801E5B73F700BA6700 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		20610E821E5B7DCE00BA6700 /* Station.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Station.swift; sourceTree = "<group>"; };
 		20610E841E5B974200BA6700 /* Graveyard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graveyard.swift; sourceTree = "<group>"; };
+		2099860E1E8635180025C3E3 /* PickerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +69,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2007B0CF1E84C7DD00655282 /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				2034943D1E5A2939001B9F7C /* ViewController.swift */,
+				203494561E5A658A001B9F7C /* LocationView.swift */,
+				203494581E5A65A1001B9F7C /* NotificationsView.swift */,
+				203494541E5A63CB001B9F7C /* WelcomeView.swift */,
+			);
+			name = Welcome;
+			sourceTree = "<group>";
+		};
+		2007B0D01E84C7E300655282 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				20610E841E5B974200BA6700 /* Graveyard.swift */,
+				203494501E5A2F74001B9F7C /* Tools.swift */,
+				2007B0CD1E84C6DD00655282 /* UIObjects.swift */,
+				2099860E1E8635180025C3E3 /* PickerButton.swift */,
+				2039F4C61E830B3500FE9F98 /* CoreDataTools.swift */,
+			);
+			name = Tools;
+			sourceTree = "<group>";
+		};
+		2007B0D11E84C7FD00655282 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				20610E821E5B7DCE00BA6700 /* Station.swift */,
+				2014BFA21E5BF80D00C47D18 /* Line.swift */,
+			);
+			name = Objects;
+			sourceTree = "<group>";
+		};
 		2034942F1E5A2939001B9F7C = {
 			isa = PBXGroup;
 			children = (
@@ -83,19 +121,14 @@
 			isa = PBXGroup;
 			children = (
 				2034943B1E5A2939001B9F7C /* AppDelegate.swift */,
-				2034943D1E5A2939001B9F7C /* ViewController.swift */,
-				203494561E5A658A001B9F7C /* LocationView.swift */,
-				203494581E5A65A1001B9F7C /* NotificationsView.swift */,
-				203494541E5A63CB001B9F7C /* WelcomeView.swift */,
-				20610E841E5B974200BA6700 /* Graveyard.swift */,
-				203494501E5A2F74001B9F7C /* Tools.swift */,
-				2039F4C61E830B3500FE9F98 /* CoreDataTools.swift */,
-				20610E821E5B7DCE00BA6700 /* Station.swift */,
-				2014BFA21E5BF80D00C47D18 /* Line.swift */,
+				2007B0CF1E84C7DD00655282 /* Welcome */,
+				2007B0D01E84C7E300655282 /* Tools */,
+				2007B0D11E84C7FD00655282 /* Objects */,
 				2034943F1E5A2939001B9F7C /* Main.storyboard */,
 				20610E801E5B73F700BA6700 /* MainTabBarViewController.swift */,
 				20610E7E1E5B6ECD00BA6700 /* MainNavigationViewController.swift */,
 				20610E7C1E5B6DD100BA6700 /* SearchRouteViewController.swift */,
+				2007B0CA1E84BC7800655282 /* .swiftlint.yml */,
 				203494451E5A2939001B9F7C /* Assets.xcassets */,
 				203494471E5A2939001B9F7C /* LaunchScreen.storyboard */,
 				2034945E1E5A7D36001B9F7C /* Localizable.strings */,
@@ -116,6 +149,7 @@
 				203494341E5A2939001B9F7C /* Sources */,
 				203494351E5A2939001B9F7C /* Frameworks */,
 				203494361E5A2939001B9F7C /* Resources */,
+				2007B0CC1E84BCA600655282 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -166,6 +200,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2007B0CB1E84BC7800655282 /* .swiftlint.yml in Resources */,
 				203494491E5A2939001B9F7C /* LaunchScreen.storyboard in Resources */,
 				2001D8501E5AD8A0008C630C /* Train.mp4 in Resources */,
 				2034945C1E5A7D36001B9F7C /* Localizable.strings in Resources */,
@@ -175,6 +210,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2007B0CC1E84BCA600655282 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		203494341E5A2939001B9F7C /* Sources */ = {
@@ -188,11 +239,13 @@
 				203494551E5A63CB001B9F7C /* WelcomeView.swift in Sources */,
 				20610E811E5B73F700BA6700 /* MainTabBarViewController.swift in Sources */,
 				203494441E5A2939001B9F7C /* Metro.xcdatamodeld in Sources */,
+				2099860F1E8635180025C3E3 /* PickerButton.swift in Sources */,
 				2014BFA31E5BF80D00C47D18 /* Line.swift in Sources */,
 				20610E851E5B974200BA6700 /* Graveyard.swift in Sources */,
 				2034943C1E5A2939001B9F7C /* AppDelegate.swift in Sources */,
 				2039F4C71E830B3500FE9F98 /* CoreDataTools.swift in Sources */,
 				20610E831E5B7DCE00BA6700 /* Station.swift in Sources */,
+				2007B0CE1E84C6DD00655282 /* UIObjects.swift in Sources */,
 				20610E7D1E5B6DD100BA6700 /* SearchRouteViewController.swift in Sources */,
 				203494511E5A2F74001B9F7C /* Tools.swift in Sources */,
 			);

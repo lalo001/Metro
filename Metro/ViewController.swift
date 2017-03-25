@@ -149,7 +149,6 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         pageControl?.currentPage = Int(page)
     }
     
-    
     // MARK: - Custom Functions
     
     func applicationWillEnterForeground (_ notification: Notification) {
@@ -173,4 +172,3 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     }
 
 }
-

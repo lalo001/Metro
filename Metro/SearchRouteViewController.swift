@@ -11,6 +11,9 @@ import CoreData
 
 class SearchRouteViewController: UIViewController {
     
+    var fromStation: Station?
+    var fromButton: UIButton!
+    
     override func loadView() {
         super.loadView()
         
@@ -19,31 +22,61 @@ class SearchRouteViewController: UIViewController {
         self.view.backgroundColor = Tools.colorPicker(2, alpha: 1)
         
         // Create originLabel
-        let originLabel = Tools.createLabel(text: (NSLocalizedString("departingFrom", comment: "")), textAlignment: .left, textColor: Constant.labels.subtitleLabelColor, font: UIFont.systemFont(ofSize: 17, weight: UIFontWeightMedium))
+        let originLabel = UIObjects.createLabel(text: NSLocalizedString("leavingFrom", comment: "").uppercased(), textAlignment: .left, textColor: Constant.StationPicker.pickerTitleColor, font: Constant.StationPicker.pickerTitleFont)
         self.view.addSubview(originLabel)
         
         // Add originLabel Constraints
         let originLabelHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[originLabel]", options: NSLayoutFormatOptions(), metrics: nil, views: ["originLabel" : originLabel])
-        let originLabelVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[originLabel]", options: NSLayoutFormatOptions(), metrics: nil, views: ["originLabel" : originLabel])
+        let originLabelVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-30-[originLabel]", options: NSLayoutFormatOptions(), metrics: nil, views: ["originLabel" : originLabel])
         self.view.addConstraints(originLabelHorizontalConstraints)
         self.view.addConstraints(originLabelVerticalConstraints)
         
-        // Create firstStationLabel
-        let firstStationLabel = Tools.createLabel(text: "Tasqueña", textAlignment: .left, textColor: Constant.labels.titleLabelColor, font: UIFont.systemFont(ofSize: 28, weight: UIFontWeightBold))
-        firstStationLabel.numberOfLines = 0
-        self.view.addSubview(firstStationLabel)
+        //FIXME: Delete testStation
+        let testStation = coreDataDemo()
+        fromButton = UIObjects.createPickerButton(for: testStation!, inside: self.view, topConstant: 5, topObject: originLabel)
         
-        // Add firstStationLabel Constraints
-        let firstStationLabelHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-60-[firstStationLabel]-15-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["firstStationLabel" : firstStationLabel])
-        let firstStationLabelVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[originLabel][firstStationLabel]", options: NSLayoutFormatOptions(), metrics: nil, views: ["originLabel" : originLabel, "firstStationLabel" : firstStationLabel])
-        self.view.addConstraints(firstStationLabelHorizontalConstraints)
-        self.view.addConstraints(firstStationLabelVerticalConstraints)
+        let circleSize: CGFloat = 25
+        // To achieve a circle the cornerRadius must be half of the square size.
+        let cornerRadius: CGFloat = circleSize/2
+        // Create firstStationCircle
+        /*let firstStationCircle = UIObjects.createStationCircle(station: testStation!, cornerRadius: cornerRadius)
+        self.view.addSubview(firstStationCircle)
         
-        // FIXME: Delete this test station
+        // Add firstStationCircle Constraints
+        let firstStationCircleHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[firstStationCircle(circleSize)]", options: NSLayoutFormatOptions(), metrics: ["circleSize" : circleSize], views: ["firstStationCircle" : firstStationCircle])
+        let firstStationCircleHeight = NSLayoutConstraint(item: firstStationCircle, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: circleSize)
+        let firstStationCenterY = NSLayoutConstraint(item: firstStationLabel, attribute: .centerY, relatedBy: .equal, toItem: firstStationCircle, attribute: .centerY, multiplier: 1, constant: 0)
+        self.view.addConstraints(firstStationCircleHorizontalConstraints)
+        self.view.addConstraint(firstStationCircleHeight)
+        self.view.addConstraint(firstStationCenterY)
+        
+        // Create secondLineLabel
+        let secondLineLabel = UIObjects.createLabel(text: "\(NSLocalizedString("line", comment: "")) 1", textAlignment: .left, textColor: Constant.Labels.subtitleLabelColor, font: UIFont.systemFont(ofSize: 17, weight: UIFontWeightMedium))
+        self.view.addSubview(secondLineLabel)
+        
+        // Add secondLineLabel Constraints
+        let secondLineLabelVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[firstStationLabel]-20-[secondLineLabel]", options: .alignAllLeft, metrics: nil, views: ["firstStationLabel" : firstStationLabel, "secondLineLabel" : secondLineLabel])
+        self.view.addConstraints(secondLineLabelVerticalConstraints)
+        
+        // Create secondStationLabel*/
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Do any additional setup after loading the view.
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func coreDataDemo() -> Station? {
         // MARK: - Core Data Demo
         var shouldUpdate: Bool = false // This would be given the value the API returns
         guard let managedContext = CoreDataTools.getContext() else { // In CoreDataTools there's a function that returns you the context.
-            return
+            return nil
         }
         
         var testLine: Line
@@ -70,9 +103,9 @@ class SearchRouteViewController: UIViewController {
         if shouldUpdate {
             // In case we need to update
             testLine = Line(name: "2", serviceType: .lightRail, context: managedContext) // Call Line convenience init. This a custom init.
-            testStation = Station(name: "Taxqueña", status: .open, isLineEnd: true, hasRestroom: true, hasComputers: false, hasPOI: false, context: managedContext) // Call Station convenience init.
+            testStation = Station(name: "Etiopía / Plaza de la transparencia", status: .open, isLineEnd: true, hasRestroom: true, hasComputers: false, hasPOI: false, context: managedContext) // Call Station convenience init.
             guard let testStation = testStation else {
-                return
+                return nil
             }
             testLine.addStation(station: testStation)
             do {
@@ -83,43 +116,9 @@ class SearchRouteViewController: UIViewController {
             }
         }
         guard let unwrappedStation = testStation else {
-            return
+            return nil
         }
-        let circleSize: CGFloat = 25
-        // To achieve a circle the cornerRadius must be half of the square size.
-        let cornerRadius: CGFloat = circleSize/2
-        // Create firstStationCircle
-        let firstStationCircle = Tools.createStationCircle(station: unwrappedStation, cornerRadius: cornerRadius)
-        self.view.addSubview(firstStationCircle)
-        
-        // Add firstStationCircle Constraints
-        let firstStationCircleHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[firstStationCircle(circleSize)]", options: NSLayoutFormatOptions(), metrics: ["circleSize" : circleSize], views: ["firstStationCircle" : firstStationCircle])
-        let firstStationCircleHeight = NSLayoutConstraint(item: firstStationCircle, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: circleSize)
-        let firstStationCenterY = NSLayoutConstraint(item: firstStationLabel, attribute: .centerY, relatedBy: .equal, toItem: firstStationCircle, attribute: .centerY, multiplier: 1, constant: 0)
-        self.view.addConstraints(firstStationCircleHorizontalConstraints)
-        self.view.addConstraint(firstStationCircleHeight)
-        self.view.addConstraint(firstStationCenterY)
-        
-        // Create secondLineLabel
-        let secondLineLabel = Tools.createLabel(text: "\(NSLocalizedString("line", comment: "")) 1", textAlignment: .left, textColor: Constant.labels.subtitleLabelColor, font: UIFont.systemFont(ofSize: 17, weight: UIFontWeightMedium))
-        self.view.addSubview(secondLineLabel)
-        
-        // Add secondLineLabel Constraints
-        let secondLineLabelVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[firstStationLabel]-20-[secondLineLabel]", options: .alignAllLeft, metrics: nil, views: ["firstStationLabel" : firstStationLabel, "secondLineLabel" : secondLineLabel])
-        self.view.addConstraints(secondLineLabelVerticalConstraints)
-        
-        // Create secondStationLabel*/
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        return unwrappedStation
     }
 
     /*

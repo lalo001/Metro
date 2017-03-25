@@ -10,8 +10,9 @@ import UIKit
 import CoreData
 
 class Line: NSManagedObject {
-    
+    /// These constants specify the type of service of a line.
     public enum ServiceType: Int {
+        
         case subway = 0, lightRail, suburbanTrain, unknown
         
         var description: String {
@@ -23,6 +24,7 @@ class Line: NSManagedObject {
             case .suburbanTrain:
                 return NSLocalizedString("suburbanTrain", comment: "")
             case .unknown:
+                
                 return NSLocalizedString("unknown", comment: "")
             }
         }
@@ -41,7 +43,7 @@ class Line: NSManagedObject {
             self.colorsData = NSKeyedArchiver.archivedData(withRootObject: newValue as Any) as NSData?
         }
         get {
-            if let colorsData = colorsData as? Data {
+            if let colorsData = colorsData as Data? {
                 let colorArray = NSKeyedUnarchiver.unarchiveObject(with: colorsData) as? [UIColor]
                 return colorArray
             }
@@ -68,7 +70,7 @@ class Line: NSManagedObject {
         station.addToLines(self)
     }
     
-    func setLineEnds(from firstStation: Station,  to secondStation: Station) {
+    func setLineEnds(from firstStation: Station, to secondStation: Station) {
         self.addToLineEnds([firstStation, secondStation])
     }
 }
