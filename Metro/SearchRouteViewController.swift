@@ -24,35 +24,55 @@ class SearchRouteViewController: UIViewController {
         self.navigationItem.title = self.title?.uppercased()
         self.view.backgroundColor = Tools.colorPicker(2, alpha: 1)
         
+        // Create container
+        let container = UIView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(container)
+        
+        // Add container Constraints
+        let containerHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-leftMargin-[container]-rightMargin-|", options: NSLayoutFormatOptions(), metrics: ["leftMargin" : Constant.StationPicker.leftMarginSeparation, "rightMargin" : Constant.StationPicker.rightMarginSeparation], views: ["container" : container])
+        let containerVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-topMargin-[container]", options: NSLayoutFormatOptions(), metrics: ["topMargin" : Constant.StationPicker.topMarginSeparation], views: ["container" : container])
+        self.view.addConstraints(containerHorizontalConstraints)
+        self.view.addConstraints(containerVerticalConstraints)
+        
+        container.layoutIfNeeded()
+        
         // Create originLabel
         let originLabel = UIObjects.createLabel(text: NSLocalizedString("leavingFrom", comment: "").uppercased(), textAlignment: .left, textColor: Constant.StationPicker.pickerTitleColor, font: Constant.StationPicker.pickerTitleFont)
-        self.view.addSubview(originLabel)
+        container.addSubview(originLabel)
         
         // Add originLabel Constraints
-        let originLabelHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-leftMargin-[originLabel]", options: NSLayoutFormatOptions(), metrics: ["leftMargin" : Constant.StationPicker.leftMarginSeparation], views: ["originLabel" : originLabel])
-        let originLabelVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-30-[originLabel]", options: NSLayoutFormatOptions(), metrics: nil, views: ["originLabel" : originLabel])
-        self.view.addConstraints(originLabelHorizontalConstraints)
-        self.view.addConstraints(originLabelVerticalConstraints)
+        let originLabelHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[originLabel]", options: NSLayoutFormatOptions(), metrics: nil, views: ["originLabel" : originLabel])
+        let originLabelVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[originLabel]", options: NSLayoutFormatOptions(), metrics: nil, views: ["originLabel" : originLabel])
+        container.addConstraints(originLabelHorizontalConstraints)
+        container.addConstraints(originLabelVerticalConstraints)
         
         //FIXME: Delete testStation
         let results = coreDataDemo()
         
         // Create fromButtonContainer
-        fromButtonContainer = UIObjects.createPickerButton(for: results.1!, inside: self.view, with: 5, to: originLabel, target: self, action: #selector(self.stationButtonTouched(_:)))
+        fromButtonContainer = UIObjects.createPickerButton(for: results.1!, inside: container, with: 5, to: originLabel, target: self, action: #selector(self.stationButtonTouched(_:)))
         results.0?.colors = [Tools.colorPicker(5, alpha: 1)] // FIXME: Delete
         
         // Create destinationLabel
         let destinationLabel = UIObjects.createLabel(text: NSLocalizedString("destination", comment: "").uppercased(), textAlignment: .left, textColor: Constant.StationPicker.pickerTitleColor, font: Constant.StationPicker.pickerTitleFont)
-        self.view.addSubview(destinationLabel)
+        container.addSubview(destinationLabel)
         
         // Add destinationLabel Constraints
         let destinationLabelVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[fromButtonContainer]-30-[destinationLabel]", options: .alignAllLeft, metrics: nil, views: ["fromButtonContainer" : fromButtonContainer, "destinationLabel" : destinationLabel])
-        self.view.addConstraints(destinationLabelVerticalConstraints)
+        container.addConstraints(destinationLabelVerticalConstraints)
         
         // Create toButtonContainer
-        let station = Station(name: "Tasqueña", status: .open, isLineEnd: true, hasRestroom: true, hasComputers: false, hasPOI: false, context: CoreDataTools.getContext())
-        station.addToLines(results.0!)
-        toButtonContainer = UIObjects.createPickerButton(for: station, inside: self.view, with: 5, to: destinationLabel, target: self, action: #selector(self.stationButtonTouched(_:)))
+        let station = Station(name: "Tasqueña", status: .open, isLineEnd: true, hasRestroom: true, hasComputers: false, hasPOI: false, context: CoreDataTools.getContext()) //FIXME: Delete
+        station.addToLines(results.0!) // FIXME: Delete
+        toButtonContainer = UIObjects.createPickerButton(for: station, inside: container, with: 5, to: destinationLabel, target: self, action: #selector(self.stationButtonTouched(_:)))
+        
+        // Add bottomContainerConstraints
+        let bottomContainerConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[toButtonContainer]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["toButtonContainer" : toButtonContainer])
+        container.addConstraints(bottomContainerConstraints)
+        
+        Graphics.createRouteIcon(in: self.view, from: originLabel, to: destinationLabel)
+        Graphics.createInvertIconButton(in: self.view, with: container, from: fromButtonContainer, to: destinationLabel, target: self, action: #selector(self.invertStations(_:)))
     }
 
     override func viewDidLoad() {
@@ -69,20 +89,15 @@ class SearchRouteViewController: UIViewController {
     override var shouldAutorotate: Bool {
         return false
     }
-    /*
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        let inset: CGFloat = toButton.frame.width - (toButton.titleLabel?.frame.width ?? 0) - (toButton.imageView?.frame.width ?? 0)
-        print("Inset: \(inset)")
-        toButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        toButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: -inset)
-        toButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: inset)
-    }*/
     
     // MARK: - Custom Functions
     
     func stationButtonTouched(_ sender: PickerButton) {
         print("Station touched.")
+    }
+    
+    func invertStations(_ sender: UIButton) {
+        print("Invert Stations.")
     }
     
     // FIXME: Delete

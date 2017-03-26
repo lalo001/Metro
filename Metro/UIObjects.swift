@@ -8,60 +8,6 @@
 
 import UIKit
 
-struct Constant {
-    
-    struct TextFields {
-        static let aboveViewSpace: CGFloat = 25
-        static let activeColor: UIColor = Tools.colorPicker(1, alpha: 1)
-        static let fontSize: CGFloat = 15
-        static let fontWeight: CGFloat = UIFontWeightMedium
-        static let iconSize: CGFloat = 25
-        static let iconLeftMargin: CGFloat = 18
-        static let iconBiggerWidthLeftMargin: CGFloat = 15
-        static let lineHeight: CGFloat = 0.5
-        static let lineColor: UIColor = Tools.colorPicker(3, alpha: 1)
-        static let nonActiveColor: UIColor = Tools.colorPicker(1, alpha: 0.8)
-        static let placeholderFontSize: CGFloat = 15
-        static let spaceBelowText: CGFloat = 10
-        static let textLeftMargin: CGFloat = 55
-        static let textRightMargin: CGFloat = 20
-        static let textAlignment: NSTextAlignment = .left
-    }
-    
-    struct Buttons {
-        static let mainButtonHeight: CGFloat = 50
-    }
-    
-    struct Animations {
-        static let loadingAnimationDuration: TimeInterval = 0.5
-    }
-    
-    struct Labels {
-        static let appWelcomeLabelColor: UIColor = Tools.colorPicker(1, alpha: 1)
-        static let appWelcomeLabelFont: UIFont = UIFont.systemFont(ofSize: 64, weight: UIFontWeightHeavy)
-        static let inputLabelColor: UIColor = Tools.colorPicker(1, alpha: 1)
-        static let inputLabelFont: UIFont = UIFont.systemFont(ofSize: 28, weight: UIFontWeightBold)
-        static let lineNameColor: UIColor = Tools.colorPicker(1, alpha: 1)
-        static let lineNameFont: UIFont = UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold)
-        static let navigationBarTitleColor: UIColor = Tools.colorPicker(1, alpha: 1)
-        static let subtitleLabelColor: UIColor = Tools.colorPicker(1, alpha: 0.5)
-        static let titleLabelColor: UIColor = Tools.colorPicker(1, alpha: 1)
-    }
-    
-    struct StationPicker {
-        static let bottomLineSeparation: CGFloat = Constant.StationPicker.lineSeparation + 5
-        static let leftMarginSeparation: CGFloat = 20
-        static let lineSeparation: CGFloat = 6
-        static let lineWidthOffset: CGFloat = 2
-        static let nonTextAlpha: CGFloat = 1
-        static let pickerTitleColor: UIColor = Tools.colorPicker(3, alpha: 1)
-        static let pickerTitleFont: UIFont = UIFont.systemFont(ofSize: 15, weight: UIFontWeightMedium)
-        static let pickerTextFont: UIFont = UIFont.systemFont(ofSize: 20, weight: UIFontWeightHeavy)
-        static let rightMarginSeparation: CGFloat = 90
-    }
-    
-}
-
 class UIObjects: NSObject {
     
     // MARK: - Waiting Screen Creation
@@ -136,7 +82,7 @@ class UIObjects: NSObject {
         - view: A [UIView](apple-reference-documentation://hsdIxI1kkd) where the button will be added.
         - topConstant: A [CGFloat](apple-reference-documentation://hswJZ0A9na) that indicates the top separation of the button to its topObject.
         - topObject: Any object with which the button will have a top constraint.
-    - note: If topObject is `nil`\, the top constraint is made with the superview.
+     - note: If topObject is `nil`\, the top constraint is made with the superview.
      */
     static func createPickerButton(for station: Station, inside view: UIView, with topConstant: CGFloat, to topObject: Any?, target: Any?, action: Selector?) -> UIView {
 
@@ -146,7 +92,7 @@ class UIObjects: NSObject {
         view.addSubview(container)
         
         // Add container Constraints
-        let containerHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-leftMargin-[container]-rightMargin-|", options: NSLayoutFormatOptions(), metrics: ["leftMargin" : Constant.StationPicker.leftMarginSeparation, "rightMargin" : Constant.StationPicker.rightMarginSeparation], views: ["container" : container])
+        let containerHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[container]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["container" : container])
         var containerVerticalConstraints: [NSLayoutConstraint]
         if let topObject = topObject {
             containerVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[topObject]-topConstant-[container]", options: NSLayoutFormatOptions(), metrics: ["topConstant" : topConstant], views: ["topObject" : topObject, "container" : container])
@@ -169,7 +115,7 @@ class UIObjects: NSObject {
         button.contentHorizontalAlignment = .left
         button.titleLabel?.textAlignment = .left
         let imageWidth = button.currentImage?.size.width ?? 0
-        let leftImageInset = view.frame.width - Constant.StationPicker.leftMarginSeparation - Constant.StationPicker.rightMarginSeparation - imageWidth
+        let leftImageInset = view.frame.width - imageWidth
         button.titleLabel?.preferredMaxLayoutWidth = leftImageInset
         button.setTitle((station.name ?? "").uppercased(), for: .normal)
         button.transform = CGAffineTransform(scaleX: -1, y: 1)
@@ -182,7 +128,7 @@ class UIObjects: NSObject {
         
         // Add button Constraints
         let buttonHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[button]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["button" : button])
-        let buttonVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[button]", options: NSLayoutFormatOptions(), metrics: ["topConstant" : topConstant], views: ["button" : button])
+        let buttonVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[button]", options: NSLayoutFormatOptions(), metrics: nil, views: ["button" : button])
         container.addConstraints(buttonHorizontalConstraints)
         container.addConstraints(buttonVerticalConstraints)
         
@@ -260,9 +206,10 @@ class UIObjects: NSObject {
      Creates a UIView for use as Line Circle.
      
      - parameters:
-     - line: The Line object that contains the information that will be used for the circle.
-     - diameter: A [CGFloat](apple-reference-documentation://hswJZ0A9na) that must be the size of the desired circle.
-     - returns: A circular [UIView](apple-reference-documentation://hsdIxI1kkd) with the line color and name.
+        - line: The Line object that contains the information that will be used for the circle.
+        - diameter: A [CGFloat](apple-reference-documentation://hswJZ0A9na) that must be the size of the desired circle.
+        - view: A [UIView](apple-reference-documentation://hsdIxI1kkd) where the circle will be added.
+    - returns: A circular [UIView](apple-reference-documentation://hsdIxI1kkd) with the line color and name.
      
      */
     static func createCircle(for line: Line, with diameter: CGFloat, in view: UIView) -> UIView? {
@@ -311,6 +258,17 @@ class UIObjects: NSObject {
         }
     }
     
+    /**
+     Creates all the circles for the lines that exist in a given array and wraps them in a container.
+     
+     - parameters:
+        - lines: An array of Line objects.
+        - view: A [UIView](apple-reference-documentation://hsdIxI1kkd) where the container will be added.
+        - topConstant: The separation top constant between the topObject and the container.
+        - topObject: The object to which the container will have a top constraint.
+    - returns: A [UIView](apple-reference-documentation://hsdIxI1kkd) that has all the circles for each Line element on the given array.
+     
+     */
     static func createCircles(for lines: [Line], in view: UIView, with topConstant: CGFloat, to topObject: Any?) -> UIView {
         
         // Create container
