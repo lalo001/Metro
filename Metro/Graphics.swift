@@ -36,8 +36,9 @@ class Graphics {
         view.addConstraint(containerBottomConstraint)
         
         // Create upperCircle
-        let upperCircle = UIView()
+        let upperCircle = Circle(cornerRadius: Constant.RouteIcon.circleDiameter/2)
         upperCircle.translatesAutoresizingMaskIntoConstraints = false
+        upperCircle.clipsToBounds = true
         upperCircle.layer.cornerRadius = Constant.RouteIcon.circleDiameter/2
         upperCircle.layer.borderWidth = Constant.RouteIcon.borderWidth
         upperCircle.layer.borderColor = Constant.RouteIcon.circleColor.cgColor
@@ -50,10 +51,10 @@ class Graphics {
         container.addConstraints(upperCircleVerticalConstraints)
         
         // Create lowerCircle
-        let lowerCircle = UIView()
+        let lowerCircle = Circle(cornerRadius: Constant.RouteIcon.circleDiameter/2)
         lowerCircle.translatesAutoresizingMaskIntoConstraints = false
+        lowerCircle.clipsToBounds = true
         lowerCircle.backgroundColor = Constant.RouteIcon.circleColor
-        lowerCircle.layer.cornerRadius = Constant.RouteIcon.circleDiameter/2
         container.addSubview(lowerCircle)
         
         // Add lowerCircle Constraints
@@ -66,7 +67,7 @@ class Graphics {
         let line = UIView()
         line.translatesAutoresizingMaskIntoConstraints = false
         line.backgroundColor = Constant.RouteIcon.circleColor
-        line.layer.cornerRadius = Constant.RouteIcon.circleDiameter/10
+        line.layer.cornerRadius = Constant.RouteIcon.circleDiameter/15
         container.addSubview(line)
         
         // Add line Constraints

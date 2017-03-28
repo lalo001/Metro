@@ -11,11 +11,9 @@ import CoreData
 
 class SearchRouteViewController: UIViewController {
     
-    var fromStation: Station?
     var fromButtonContainer: UIView!
-    var fromCirclesContainer: UIView!
     var toButtonContainer: UIView!
-    var toCirclesContainer: UIView!
+    var searchButton: UIButton!
     
     override func loadView() {
         super.loadView()
@@ -47,12 +45,19 @@ class SearchRouteViewController: UIViewController {
         container.addConstraints(originLabelHorizontalConstraints)
         container.addConstraints(originLabelVerticalConstraints)
         
-        //FIXME: Delete testStation
-        let results = coreDataDemo()
-        
-        // Create fromButtonContainer
-        fromButtonContainer = UIObjects.createPickerButton(for: results.1!, inside: container, with: 5, to: originLabel, target: self, action: #selector(self.stationButtonTouched(_:)))
-        results.0?.colors = [Tools.colorPicker(5, alpha: 1)] // FIXME: Delete
+        // Create fromStation
+        var lastSessionStations = CoreDataTools.getLastSessionFromToStations()
+        if lastSessionStations.0 == nil || lastSessionStations.1 == nil {
+            if let fromStation = CoreDataTools.storedStations?.first, let toStation = CoreDataTools.storedStations?[1] {
+                CoreDataTools.updateSession(lastUpdateDate: nil, fromStation: fromStation, toStation: toStation)
+            }
+        }
+        lastSessionStations = CoreDataTools.getLastSessionFromToStations()
+        guard let fromStation = lastSessionStations.0, let toStation = lastSessionStations.1 else {
+            return
+        }
+        // Create fromButtonContainerr
+        fromButtonContainer = UIObjects.createPickerButton(for: fromStation, inside: container, with: 5, to: originLabel, target: self, action: #selector(self.stationButtonTouched(_:)))
         
         // Create destinationLabel
         let destinationLabel = UIObjects.createLabel(text: NSLocalizedString("destination", comment: "").uppercased(), textAlignment: .left, textColor: Constant.StationPicker.pickerTitleColor, font: Constant.StationPicker.pickerTitleFont)
@@ -63,16 +68,16 @@ class SearchRouteViewController: UIViewController {
         container.addConstraints(destinationLabelVerticalConstraints)
         
         // Create toButtonContainer
-        let station = Station(name: "Tasqueña", status: .open, isLineEnd: true, hasRestroom: true, hasComputers: false, hasPOI: false, context: CoreDataTools.getContext()) //FIXME: Delete
-        station.addToLines(results.0!) // FIXME: Delete
-        toButtonContainer = UIObjects.createPickerButton(for: station, inside: container, with: 5, to: destinationLabel, target: self, action: #selector(self.stationButtonTouched(_:)))
+        toButtonContainer = UIObjects.createPickerButton(for: toStation, inside: container, with: 5, to: destinationLabel, target: self, action: #selector(self.stationButtonTouched(_:)))
         
         // Add bottomContainerConstraints
         let bottomContainerConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[toButtonContainer]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["toButtonContainer" : toButtonContainer])
         container.addConstraints(bottomContainerConstraints)
         
         Graphics.createRouteIcon(in: self.view, from: originLabel, to: destinationLabel)
-        Graphics.createInvertIconButton(in: self.view, with: container, from: fromButtonContainer, to: destinationLabel, target: self, action: #selector(self.invertStations(_:)))
+        Graphics.createInvertIconButton(in: self.view, with: container, from: fromButtonContainer, to: destinationLabel, target: self, action: #selector(self.invertStationsButtonTouched(_:)))
+        searchButton = UIObjects.createRoundedButton(with: NSLocalizedString("searchRoute", comment: ""), in: self.view, target: self, action: #selector(self.searchRouteButtonTouched(_:)))
+        
     }
 
     override func viewDidLoad() {
@@ -96,59 +101,12 @@ class SearchRouteViewController: UIViewController {
         print("Station touched.")
     }
     
-    func invertStations(_ sender: UIButton) {
+    func invertStationsButtonTouched(_ sender: UIButton) {
         print("Invert Stations.")
     }
     
-    // FIXME: Delete
-    func coreDataDemo() -> (Line?, Station?) {
-        // MARK: - Core Data Demo
-        var shouldUpdate: Bool = false // This would be given the value the API returns
-        guard let managedContext = CoreDataTools.getContext() else { // In CoreDataTools there's a function that returns you the context.
-            return (nil, nil)
-        }
-        
-        var testLine: Line?
-        var testStation: Station?
-        
-        let fetchRequest = NSFetchRequest<Line>(entityName: "Line") // Begin a fetch on Line
-        let predicate = NSPredicate(format: "name = %@", "2") // Predicate so that we are looking for Lines named '2'
-        fetchRequest.predicate = predicate // Assign the predicate to the fetch
-        do {
-            let fetchedResult = try managedContext.fetch(fetchRequest) // Execute the fetch and save the results
-            if fetchedResult.count == 0 {
-                shouldUpdate = true
-                print("New.")
-            } else {
-                print("Already added. Count: \(fetchedResult.count)")
-                if let line = fetchedResult.first, let station = fetchedResult.first?.stations?.allObjects[0] as? Station {
-                    testLine = line
-                    testStation = station
-                }
-            }
-        } catch let error {
-            print(error.localizedDescription)
-        }
-        if shouldUpdate {
-            // In case we need to update
-            testLine = Line(name: "2", serviceType: .lightRail, context: managedContext) // Call Line convenience init. This a custom init.
-            testStation = Station(name: "Etiopía / Plaza de la transparencia", status: .open, isLineEnd: true, hasRestroom: true, hasComputers: false, hasPOI: false, context: managedContext) // Call Station convenience init.
-            guard let testStation = testStation else {
-                return (nil, nil)
-            }
-            testLine?.addStation(station: testStation)
-            do {
-                try managedContext.save() // Save the changes. This is key.
-                print("\(testLine!.description) saved.") // FIXME: Delete
-            } catch let error {
-                print(error)
-            }
-        }
-        
-        guard let unwrappedLine = testLine, let unwrappedStation = testStation else {
-            return (nil, nil)
-        }
-        return (unwrappedLine, unwrappedStation)
+    func searchRouteButtonTouched(_ sender: UIButton) {
+        print("Search Royte.")
     }
 
     /*

@@ -16,6 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        if CoreDataTools.getLastSession() == nil {
+            CoreDataTools.createLines()
+            CoreDataTools.createStations()
+        }
+        CoreDataTools.createSession()
         return true
     }
 
@@ -45,6 +50,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Core Data stack
 
+    static var storeName: String = "Metro"
+    
+    static var storeURL: URL {
+        let storePaths = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)
+        let storePath = storePaths[0] as String
+        let fileManager = FileManager.default
+        
+        do {
+            try fileManager.createDirectory(
+                atPath: storePath as String,
+                withIntermediateDirectories: true,
+                attributes: nil)
+        } catch {
+            print("Error creating storePath \(storePath): \(error)")
+        }
+        
+        let sqliteFilePath = storePath.appending(storeName + ".sqlite")
+        return URL(fileURLWithPath: sqliteFilePath)
+    }
+    
     lazy var persistentContainer: NSPersistentContainer = {
         /*
          The persistent container for the application. This implementation
@@ -52,7 +77,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
         */
-        let container = NSPersistentContainer(name: "Metro")
+        let container = NSPersistentContainer(name: storeName)
+        let description = NSPersistentStoreDescription(url: storeURL)
+        
+        // Lightweight automatic migration
+        description.shouldInferMappingModelAutomatically = true
+        description.shouldMigrateStoreAutomatically = true
+        
+        container.persistentStoreDescriptions = [description]
         container.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.

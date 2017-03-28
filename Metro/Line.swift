@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class Line: NSManagedObject {
+public class Line: NSManagedObject {
     /// These constants specify the type of service of a line.
     public enum ServiceType: Int {
         
@@ -31,7 +31,7 @@ class Line: NSManagedObject {
     }
     var serviceType: ServiceType {
         set {
-            self.serviceTypeRaw = Int16(serviceType.rawValue)
+            self.serviceTypeRaw = Int16(newValue.rawValue)
         }
         get {
             return ServiceType(rawValue: Int(self.serviceTypeRaw)) ?? .unknown
@@ -51,7 +51,7 @@ class Line: NSManagedObject {
         }
     }
     
-    override var description: String {
+    override public var description: String {
         if let name = self.name {
             return "\(self.serviceType.description) Line \(name)."
         } else {
@@ -59,10 +59,11 @@ class Line: NSManagedObject {
         }
     }
     
-    convenience init(name: String, serviceType: ServiceType, context: NSManagedObjectContext) {
+    convenience init(name: String, serviceType: ServiceType, order: Int, context: NSManagedObjectContext) {
         self.init(entity: Line.entity(), insertInto: context)
         self.name = name
         self.serviceType = serviceType
+        self.order = Int16(order)
     }
     
     func addStation(station: Station) {

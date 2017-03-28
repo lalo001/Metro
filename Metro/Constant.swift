@@ -29,7 +29,12 @@ struct Constant {
     }
     
     struct Buttons {
+        static let mainButtonTitleColor: UIColor = Tools.colorPicker(1, alpha: 1)
+        static let mainButtonCornerRadius: CGFloat = Constant.Buttons.mainButtonHeight/2
+        static let mainButtonBottomSeparation: CGFloat = 30
+        static let mainButtonFont: UIFont = UIFont.systemFont(ofSize: 20, weight: UIFontWeightMedium)
         static let mainButtonHeight: CGFloat = 50
+        static let mainButtonSideSeparation: CGFloat = 40
     }
     
     struct Animations {

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import QuartzCore
 
 class UIObjects: NSObject {
     
@@ -157,11 +158,11 @@ class UIObjects: NSObject {
         let lineVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[button]-separation-[line(2)]", options: .alignAllLeft, metrics: ["separation" : Constant.StationPicker.lineSeparation], views: ["button" : button, "line" : line])
         container.addConstraints(lineHorizontalConstraints)
         container.addConstraints(lineVerticalConstraints)
-        
-        // FIXME: Delete
-        lines[0].colors = [Tools.colorPicker(5, alpha: 1)]
-        
+    
+        // Create circlesContainer
         let circlesContainer = UIObjects.createCircles(for: lines, in: container, with: Constant.StationPicker.bottomLineSeparation, to: line)
+        
+        // Add circlesContainer Contraints
         let circlesContainerVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[circlesContainer]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["circlesContainer" : circlesContainer])
         container.addConstraints(circlesContainerVerticalConstraints)
         
@@ -215,9 +216,8 @@ class UIObjects: NSObject {
     static func createCircle(for line: Line, with diameter: CGFloat, in view: UIView) -> UIView? {
         
         let cornerRadius = diameter/2
-        
         // Create circle
-        let circle = UIView()
+        let circle = Circle(cornerRadius: cornerRadius)
         circle.translatesAutoresizingMaskIntoConstraints = false
         circle.clipsToBounds = true
         guard let colors = line.colors, let colorsCount = line.colors?.count else {
@@ -231,7 +231,6 @@ class UIObjects: NSObject {
         } else {
             circle.backgroundColor = colors[0]
         }
-        circle.layer.cornerRadius = cornerRadius
         view.addSubview(circle)
         
         // Add circle Constraints
@@ -256,6 +255,7 @@ class UIObjects: NSObject {
         } else {
             return nil
         }
+        
     }
     
     /**
@@ -312,6 +312,30 @@ class UIObjects: NSObject {
         }
         
         return container
+    }
+    
+    // MARK: - UIButton Creation
+    
+    static func createRoundedButton(with title: String, in view: UIView, target: Any, action: Selector) -> UIButton {
+        
+        // Create button
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(title, for: .normal)
+        button.backgroundColor = Tools.colorPicker(3, alpha: 1)
+        button.layer.cornerRadius = Constant.Buttons.mainButtonCornerRadius
+        button.titleLabel?.font = Constant.Buttons.mainButtonFont
+        button.setTitleColor(Constant.Buttons.mainButtonTitleColor, for: .normal)
+        button.addTarget(target, action: action, for: .touchUpInside)
+        view.addSubview(button)
+        
+        // Add button Constraints
+        let buttonHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-sideSeparation-[button]-sideSeparation-|", options: NSLayoutFormatOptions(), metrics: ["sideSeparation" : Constant.Buttons.mainButtonSideSeparation], views: ["button" : button])
+        let buttonVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[button(height)]-bottomSeparation-|", options: NSLayoutFormatOptions(), metrics: ["height" : Constant.Buttons.mainButtonHeight, "bottomSeparation" : Constant.Buttons.mainButtonBottomSeparation], views: ["button" : button])
+        view.addConstraints(buttonHorizontalConstraints)
+        view.addConstraints(buttonVerticalConstraints)
+        
+        return button
     }
     
 }

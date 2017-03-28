@@ -14,11 +14,18 @@ class MainTabBarViewController: UITabBarController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.tabBar.isTranslucent = false
+        self.tabBar.barTintColor = Tools.colorPicker(2, alpha: 1)
+        self.tabBar.tintColor = Tools.colorPicker(3, alpha: 1)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override var shouldAutorotate: Bool {
+        return false
     }
     
     /*

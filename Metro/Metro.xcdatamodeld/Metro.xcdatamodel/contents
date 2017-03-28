@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12140" systemVersion="16D32" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16E195" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Line" representedClassName=".Line" syncable="YES" codeGenerationType="category">
         <attribute name="colorsData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="serviceTypeRaw" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" customClassName="ServiceType" syncable="YES"/>
-        <relationship name="lineEnds" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Station" inverseName="endingOfLines" inverseEntity="Station" syncable="YES"/>
-        <relationship name="stations" toMany="YES" deletionRule="Nullify" destinationEntity="Station" inverseName="lines" inverseEntity="Station" syncable="YES"/>
+        <relationship name="lineEnds" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Station" inverseName="endingOfLines" inverseEntity="Station" syncable="YES"/>
+        <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Station" inverseName="lines" inverseEntity="Station" syncable="YES"/>
+    </entity>
+    <entity name="Session" representedClassName=".Session" syncable="YES" codeGenerationType="class">
+        <attribute name="lastUpdateDate" optional="YES" attributeType="Date" defaultDateTimeInterval="-534457140" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="fromStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Station" inverseName="lastSessionFromStation" inverseEntity="Station" syncable="YES"/>
+        <relationship name="toStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Station" inverseName="lastSessionToStation" inverseEntity="Station" syncable="YES"/>
     </entity>
     <entity name="Station" representedClassName=".Station" syncable="YES" codeGenerationType="category">
-        <attribute name="hasComputers" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="hasPOI" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="hasRestroom" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="isLineEnd" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hasComputers" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hasPOI" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hasRestroom" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isLineEnd" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="statusRaw" attributeType="Integer 16" usesScalarValueType="YES" customClassName="Status" syncable="YES"/>
-        <relationship name="endingOfLines" toMany="YES" deletionRule="Nullify" destinationEntity="Line" inverseName="lineEnds" inverseEntity="Line" syncable="YES"/>
-        <relationship name="lines" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Line" inverseName="stations" inverseEntity="Line" syncable="YES"/>
-    </entity>
-    <entity name="Update" representedClassName=".Update" syncable="YES" codeGenerationType="class">
-        <attribute name="lastUpdateDate" optional="YES" attributeType="Date" defaultDateTimeInterval="-534457140" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="endingOfLines" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Line" inverseName="lineEnds" inverseEntity="Line" syncable="YES"/>
+        <relationship name="lastSessionFromStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Session" inverseName="fromStation" inverseEntity="Session" syncable="YES"/>
+        <relationship name="lastSessionToStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Session" inverseName="toStation" inverseEntity="Session" syncable="YES"/>
+        <relationship name="lines" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Line" inverseName="stations" inverseEntity="Line" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Line" positionX="-27" positionY="342" width="128" height="118"/>
-        <element name="Station" positionX="-261" positionY="366" width="128" height="165"/>
-        <element name="Update" positionX="-414" positionY="371" width="128" height="58"/>
+        <element name="Line" positionX="-27" positionY="342" width="128" height="135"/>
+        <element name="Session" positionX="-414" positionY="371" width="128" height="88"/>
+        <element name="Station" positionX="-261" positionY="366" width="128" height="195"/>
     </elements>
 </model>

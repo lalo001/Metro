@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class Station: NSManagedObject {
+public class Station: NSManagedObject {
     
     /// These constants specify the status of the station.
     public enum Status: Int {

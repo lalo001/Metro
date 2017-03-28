@@ -6,14 +6,18 @@
   Copyright © 2017 Eduardo Valencia. All rights reserved.
 */
 "arriving at" = "Arriving at";
+"dataIsNil" = "Data is nil";
 "destination" = "Destination";
+"httpResponseIsNil" = "HTTP Response is nil";
 "leavingFrom" = "Leaving from";
-"lightTrain" = "Light Train";
+"lightRail" = "Light Rail";
 "line" = "Line";
 "metro" = "Metro";
+"searchRoute" = "Search Route";
 "slogan" = "The app to get from point A to B faster.";
 "suburbanTrain" = "Suburban Train";
 "subway" = "Subway";
 "unknown" = "Unknown";
+"urlIsNil" = "URL is nil.";
 "welcomeTo" = "Welcome to";
 
