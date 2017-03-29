@@ -6,15 +6,20 @@
   Copyright © 2017 Eduardo Valencia. All rights reserved.
 */
 "arriving at" = "Arriving at";
+"category" = "Category";
 "dataIsNil" = "Data is nil";
+"date" = "Date";
 "destination" = "Destination";
 "httpResponseIsNil" = "HTTP Response is nil";
+"events" = "Events";
+"invalidLink" = "There isn't a valid link on this QR Code.\nPlease try again with another code.";
 "leavingFrom" = "Leaving from";
 "lightRail" = "Light Rail";
 "line" = "Line";
 "metro" = "Metro";
 "searchRoute" = "Search Route";
 "slogan" = "The app to get from point A to B faster.";
+"station" = "Station";
 "suburbanTrain" = "Suburban Train";
 "subway" = "Subway";
 "unknown" = "Unknown";

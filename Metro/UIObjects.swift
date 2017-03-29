@@ -298,7 +298,11 @@ class UIObjects: NSObject {
             if let currentCircle = currentCircle {
                 var currentCircleHorizontalConstraints: [NSLayoutConstraint]
                 if i == 0 {
-                    currentCircleHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[currentCircle]", options: NSLayoutFormatOptions(), metrics: nil, views: ["currentCircle" : currentCircle])
+                    if i + 1 == sortedLines.count {
+                        currentCircleHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[currentCircle]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["currentCircle" : currentCircle])
+                    } else {
+                        currentCircleHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[currentCircle]", options: NSLayoutFormatOptions(), metrics: nil, views: ["currentCircle" : currentCircle])
+                    }
                 } else if i + 1 == sortedLines.count {
                     currentCircleHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:[previousCircle]-[currentCircle]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["previousCircle" : circles[i - 1], "currentCircle" : currentCircle])
                 } else {

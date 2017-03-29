@@ -90,14 +90,14 @@ class Graphics {
         - target: The [UIButton](apple-reference-documentation://hsOyO61dSB) target for a touchUpInside action.
         - action: A [Selector](apple-reference-documentation://hs-szf3dZP) to trigger when a touchUpInside event happens on the button.
      */
-    static func createInvertIconButton(in view: UIView, with viewForCenter: UIView, from topContainer: UIView, to lowerContainer: UIView, target: Any, action: Selector) {
+    static func createInvertIconButton(in view: UIView, with viewForCenter: UIView, from topContainer: UIView, to lowerContainer: UIView, target: Any, action: Selector) -> UIButton? {
         
         // Create centerContainer
         let centerContainer = createCenterForInvertIcon(from: topContainer, to: lowerContainer, in: viewForCenter)
         
         // Create image
         guard let image = UIImage(named: "Invert Icon") else {
-            return
+            return nil
         }
         // Create imageView
         let arrowButton = UIButton(type: .system)
@@ -117,6 +117,7 @@ class Graphics {
         view.addConstraints(arrowButtonHorizontalConstraints)
         view.addConstraint(arrowButtonHeightConstraints)
         view.addConstraint(arrowButtonCenterY)
+        return arrowButton
     }
     
     fileprivate static func createCenterForInvertIcon(from topContainer: UIView, to lowerContainer: UIView, in view: UIView) -> UIView {
@@ -133,5 +134,30 @@ class Graphics {
         view.addConstraints(containerVerticalConstraints)
         
         return container
+    }
+    
+    // MARK: - Cancel Button
+    
+    static func createCancelButton(in view: UIView, target: Any, action: Selector) -> UIButton {
+        
+        // Create cancelButton
+        let cancelButton = UIButton(type: .system)
+        let whiteColor = Tools.colorPicker(1, alpha: 1)
+        cancelButton.tintColor = whiteColor
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        cancelButton.setImage(Tools.imageWithColor(UIImage(named: "Cancel Button")!, color: whiteColor), for: .normal)
+        cancelButton.addTarget(target, action: action, for: .touchUpInside)
+        cancelButton.imageView?.contentMode = .scaleAspectFit
+        cancelButton.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
+        cancelButton.contentHorizontalAlignment = .center
+        cancelButton.contentVerticalAlignment = .center
+        view.addSubview(cancelButton)
+        
+        // Add cancelButton Constraints
+        let cancelHorizontalConstraint = NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[cancelButton(30)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["cancelButton" : cancelButton])
+        let cancelVerticalConstraint = NSLayoutConstraint.constraints(withVisualFormat: "V:|-top-[cancelButton(30)]", options: NSLayoutFormatOptions(), metrics: ["top" : Constant.Buttons.cancelButtonTopConstant], views: ["cancelButton" : cancelButton])
+        view.addConstraints(cancelHorizontalConstraint)
+        view.addConstraints(cancelVerticalConstraint)
+        return cancelButton
     }
 }

@@ -15,6 +15,7 @@ class MainNavigationViewController: UINavigationController {
 
         // Do any additional setup after loading the view.
         self.navigationBar.barTintColor = Tools.colorPicker(2, alpha: 1)
+        self.navigationBar.backgroundColor = .red
         self.navigationBar.barStyle = .black
         self.navigationBar.isTranslucent = false
         self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : Tools.colorPicker(1, alpha: 1)]

@@ -17,7 +17,7 @@ class PickerButton: UIButton {
         // Drawing code
     }
     */
-    
+
     override var intrinsicContentSize: CGSize {
         let titleWidth = titleLabel?.intrinsicContentSize.width ?? 0
         let imageWidth = imageView?.intrinsicContentSize.width ?? 0

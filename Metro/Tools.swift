@@ -46,6 +46,9 @@ class Tools: NSObject {
      16. Line 12 Golden
      17. Light Rail Line Blue
      18. Suburban Line Red
+     19. Search Bar Gray
+     20. Scanner Error Red
+     21. Scanner Success Green
      
      - parameters:
         - key: the desired color key
@@ -72,7 +75,10 @@ class Tools: NSObject {
             15 : UIColor(red: 0.0/255.0, green: 158.0/255.0, blue: 96.0/255.0, alpha: alpha), // #009E60
             16 : UIColor(red: 176.0/255.0, green: 154.0/255.0, blue: 101.0/255.0, alpha: alpha), // #B09A65
             17: UIColor(red: 128.0/255.0, green: 155.0/255.0, blue: 245.0/255.0, alpha: alpha), // #809BF5
-            18 : UIColor(red: 214.0/255.0, green: 27.0/255.0, blue: 13.0/255.0, alpha: alpha) // #D61B0D
+            18 : UIColor(red: 214.0/255.0, green: 27.0/255.0, blue: 13.0/255.0, alpha: alpha), // #D61B0D
+            19 : UIColor(red: 53.0/255.0, green: 50.0/255.0, blue: 54.0/255.0, alpha: alpha), // #363236
+            20 : UIColor(red: 231/255.0, green: 29/255.0, blue: 54/255.0, alpha: alpha), // #E71D36
+            21 : UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: alpha) // #4CD964
         ]
         if let color = colorDictionary[key] {
             return color

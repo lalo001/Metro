@@ -10,6 +10,12 @@
 		2001D8501E5AD8A0008C630C /* Train.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2001D84F1E5AD8A0008C630C /* Train.mp4 */; };
 		2007B0CB1E84BC7800655282 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 2007B0CA1E84BC7800655282 /* .swiftlint.yml */; };
 		2007B0CE1E84C6DD00655282 /* UIObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2007B0CD1E84C6DD00655282 /* UIObjects.swift */; };
+		2008F6F31E8B24D700170643 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2008F6F21E8B24D700170643 /* EventsViewController.swift */; };
+		2008F6F71E8B401A00170643 /* EventSearchResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2008F6F61E8B401A00170643 /* EventSearchResultsTableViewController.swift */; };
+		2008F7001E8C0F4700170643 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2008F6FC1E8C0F4700170643 /* ScannerViewController.swift */; };
+		2008F7011E8C0F4700170643 /* ScanOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2008F6FD1E8C0F4700170643 /* ScanOverlay.swift */; };
+		2008F7021E8C0F4700170643 /* ScanBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2008F6FE1E8C0F4700170643 /* ScanBorder.swift */; };
+		2008F7031E8C0F4700170643 /* ScanAcceptedBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2008F6FF1E8C0F4700170643 /* ScanAcceptedBorder.swift */; };
 		2014BFA31E5BF80D00C47D18 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2014BFA21E5BF80D00C47D18 /* Line.swift */; };
 		202D53AE1E8A1E6C0016A946 /* MetroBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D53AD1E8A1E6C0016A946 /* MetroBackend.swift */; };
 		202D53B01E8A28A80016A946 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D53AF1E8A28A80016A946 /* Circle.swift */; };
@@ -30,6 +36,7 @@
 		20610E811E5B73F700BA6700 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20610E801E5B73F700BA6700 /* MainTabBarViewController.swift */; };
 		20610E831E5B7DCE00BA6700 /* Station.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20610E821E5B7DCE00BA6700 /* Station.swift */; };
 		20610E851E5B974200BA6700 /* Graveyard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20610E841E5B974200BA6700 /* Graveyard.swift */; };
+		2083393E1E8C477C0002EFF2 /* MetroEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2083393D1E8C477C0002EFF2 /* MetroEvent.swift */; };
 		2090D07B1E875AA600E5E35C /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2090D07A1E875AA600E5E35C /* Constant.swift */; };
 		2090D07D1E8767E300E5E35C /* Graphics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2090D07C1E8767E300E5E35C /* Graphics.swift */; };
 		2099860F1E8635180025C3E3 /* PickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2099860E1E8635180025C3E3 /* PickerButton.swift */; };
@@ -39,6 +46,12 @@
 		2001D84F1E5AD8A0008C630C /* Train.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Train.mp4; sourceTree = "<group>"; };
 		2007B0CA1E84BC7800655282 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
 		2007B0CD1E84C6DD00655282 /* UIObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIObjects.swift; sourceTree = "<group>"; };
+		2008F6F21E8B24D700170643 /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
+		2008F6F61E8B401A00170643 /* EventSearchResultsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSearchResultsTableViewController.swift; sourceTree = "<group>"; };
+		2008F6FC1E8C0F4700170643 /* ScannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerViewController.swift; sourceTree = "<group>"; };
+		2008F6FD1E8C0F4700170643 /* ScanOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanOverlay.swift; sourceTree = "<group>"; };
+		2008F6FE1E8C0F4700170643 /* ScanBorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanBorder.swift; sourceTree = "<group>"; };
+		2008F6FF1E8C0F4700170643 /* ScanAcceptedBorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanAcceptedBorder.swift; sourceTree = "<group>"; };
 		2014BFA21E5BF80D00C47D18 /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		202D53AD1E8A1E6C0016A946 /* MetroBackend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetroBackend.swift; sourceTree = "<group>"; };
 		202D53AF1E8A28A80016A946 /* Circle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
@@ -61,6 +74,7 @@
 		20610E801E5B73F700BA6700 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		20610E821E5B7DCE00BA6700 /* Station.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Station.swift; sourceTree = "<group>"; };
 		20610E841E5B974200BA6700 /* Graveyard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graveyard.swift; sourceTree = "<group>"; };
+		2083393D1E8C477C0002EFF2 /* MetroEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetroEvent.swift; path = Metro/MetroEvent.swift; sourceTree = "<group>"; };
 		2090D07A1E875AA600E5E35C /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		2090D07C1E8767E300E5E35C /* Graphics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graphics.swift; sourceTree = "<group>"; };
 		2099860E1E8635180025C3E3 /* PickerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerButton.swift; sourceTree = "<group>"; };
@@ -108,9 +122,21 @@
 			name = "Core Data";
 			sourceTree = "<group>";
 		};
+		2008F7041E8C0F4C00170643 /* Scanner */ = {
+			isa = PBXGroup;
+			children = (
+				2008F6FC1E8C0F4700170643 /* ScannerViewController.swift */,
+				2008F6FD1E8C0F4700170643 /* ScanOverlay.swift */,
+				2008F6FE1E8C0F4700170643 /* ScanBorder.swift */,
+				2008F6FF1E8C0F4700170643 /* ScanAcceptedBorder.swift */,
+			);
+			name = Scanner;
+			sourceTree = "<group>";
+		};
 		2032A0621E883B9F00D96099 /* UI Creation */ = {
 			isa = PBXGroup;
 			children = (
+				202D53AF1E8A28A80016A946 /* Circle.swift */,
 				2090D07A1E875AA600E5E35C /* Constant.swift */,
 				2090D07C1E8767E300E5E35C /* Graphics.swift */,
 				2099860E1E8635180025C3E3 /* PickerButton.swift */,
@@ -122,7 +148,7 @@
 		2034942F1E5A2939001B9F7C = {
 			isa = PBXGroup;
 			children = (
-				202D53AF1E8A28A80016A946 /* Circle.swift */,
+				2083393D1E8C477C0002EFF2 /* MetroEvent.swift */,
 				2034943A1E5A2939001B9F7C /* Metro */,
 				203494391E5A2939001B9F7C /* Products */,
 			);
@@ -148,6 +174,9 @@
 				20610E801E5B73F700BA6700 /* MainTabBarViewController.swift */,
 				20610E7E1E5B6ECD00BA6700 /* MainNavigationViewController.swift */,
 				20610E7C1E5B6DD100BA6700 /* SearchRouteViewController.swift */,
+				2008F6F21E8B24D700170643 /* EventsViewController.swift */,
+				2008F6F61E8B401A00170643 /* EventSearchResultsTableViewController.swift */,
+				2008F7041E8C0F4C00170643 /* Scanner */,
 				2007B0CA1E84BC7800655282 /* .swiftlint.yml */,
 				203494451E5A2939001B9F7C /* Assets.xcassets */,
 				203494471E5A2939001B9F7C /* LaunchScreen.storyboard */,
@@ -254,22 +283,29 @@
 			files = (
 				2034943E1E5A2939001B9F7C /* ViewController.swift in Sources */,
 				2090D07B1E875AA600E5E35C /* Constant.swift in Sources */,
+				2083393E1E8C477C0002EFF2 /* MetroEvent.swift in Sources */,
+				2008F7021E8C0F4700170643 /* ScanBorder.swift in Sources */,
 				20610E7F1E5B6ECD00BA6700 /* MainNavigationViewController.swift in Sources */,
+				2008F6F71E8B401A00170643 /* EventSearchResultsTableViewController.swift in Sources */,
 				203494571E5A658A001B9F7C /* LocationView.swift in Sources */,
 				203494591E5A65A1001B9F7C /* NotificationsView.swift in Sources */,
 				202D53B01E8A28A80016A946 /* Circle.swift in Sources */,
+				2008F7001E8C0F4700170643 /* ScannerViewController.swift in Sources */,
 				203494551E5A63CB001B9F7C /* WelcomeView.swift in Sources */,
 				2090D07D1E8767E300E5E35C /* Graphics.swift in Sources */,
 				20610E811E5B73F700BA6700 /* MainTabBarViewController.swift in Sources */,
 				203494441E5A2939001B9F7C /* Metro.xcdatamodeld in Sources */,
 				2099860F1E8635180025C3E3 /* PickerButton.swift in Sources */,
+				2008F6F31E8B24D700170643 /* EventsViewController.swift in Sources */,
 				2014BFA31E5BF80D00C47D18 /* Line.swift in Sources */,
 				20610E851E5B974200BA6700 /* Graveyard.swift in Sources */,
 				2034943C1E5A2939001B9F7C /* AppDelegate.swift in Sources */,
 				2039F4C71E830B3500FE9F98 /* CoreDataTools.swift in Sources */,
 				20610E831E5B7DCE00BA6700 /* Station.swift in Sources */,
+				2008F7011E8C0F4700170643 /* ScanOverlay.swift in Sources */,
 				2007B0CE1E84C6DD00655282 /* UIObjects.swift in Sources */,
 				20610E7D1E5B6DD100BA6700 /* SearchRouteViewController.swift in Sources */,
+				2008F7031E8C0F4700170643 /* ScanAcceptedBorder.swift in Sources */,
 				202D53AE1E8A1E6C0016A946 /* MetroBackend.swift in Sources */,
 				203494511E5A2F74001B9F7C /* Tools.swift in Sources */,
 			);

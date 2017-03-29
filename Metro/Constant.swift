@@ -29,6 +29,7 @@ struct Constant {
     }
     
     struct Buttons {
+        static let cancelButtonTopConstant: CGFloat = 40
         static let mainButtonTitleColor: UIColor = Tools.colorPicker(1, alpha: 1)
         static let mainButtonCornerRadius: CGFloat = Constant.Buttons.mainButtonHeight/2
         static let mainButtonBottomSeparation: CGFloat = 30
@@ -75,6 +76,10 @@ struct Constant {
     
     struct InvertIcon {
         static let imageSize: CGFloat = 40
+    }
+    
+    struct Scanner {
+        static let statusLabelBottomSeparation: CGFloat = 120
     }
     
 }
