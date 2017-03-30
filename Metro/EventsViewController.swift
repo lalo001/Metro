@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchResultsUpdating {
+class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     var searchController: UISearchController?
     var eventSearchResultsController: EventSearchResultsTableViewController?
@@ -89,30 +89,18 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return CoreDataTools.storedEvents?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "reuseIdentifier")
-        cell.textLabel?.text = "Hola"
+        cell.textLabel?.text = CoreDataTools.storedEvents?[indexPath.row].name
+        cell.backgroundColor = .clear
+        cell.textLabel?.textColor = .white
         return cell
     }
 
-    // MARK: - UISearchResultsUpdating Functions
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        /*filteredResults = []
-        allFilteredResults = self.allResults.filter {
-            $0.contains(searchController.searchBar.text!)
-        }
-        let currentCount = allFilteredResults.count >= self.numberOfResults ? self.numberOfResults : self.allFilteredResults.count
-        for i in 0 ..< currentCount {
-            self.filteredResults.append(self.allFilteredResults[i])
-        }
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }*/
-    }
+    // MARK: - UISearchBarDelegate Functions
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.scopeButtonTitles = [NSLocalizedString("category", comment: ""), NSLocalizedString("date", comment: ""), NSLocalizedString("line", comment: ""), NSLocalizedString("station", comment: "")]

@@ -123,4 +123,20 @@ class Tools: NSObject {
         return emailTest.evaluate(with: testStr)
     }
     
+    // MARK: - UIStatusBar Functions
+    
+    static func getStatusBarHeight() -> CGFloat {
+        let statusBarFrame = UIApplication.shared.statusBarFrame
+        let height = min(statusBarFrame.width, statusBarFrame.height)
+        return height <= 20 ? height : 20
+    }
+    
+    static func getStatusBarFrame() -> CGRect {
+        let statusBarFrame = UIApplication.shared.statusBarFrame
+        let height = min(statusBarFrame.width, statusBarFrame.height)
+        let width = max(statusBarFrame.width, statusBarFrame.height)
+        let frame = CGRect(x: 0, y: 0, width: width, height: height)
+        return frame
+    }
+    
 }

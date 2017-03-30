@@ -36,5 +36,7 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>To scan place&apos;s QR code for more information.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>To show you the nearest events and stations.</string>
 </dict>
 </plist>

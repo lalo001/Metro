@@ -1,16 +1,14 @@
 //
-//  EventSearchResultsTableViewController.swift
+//  MapPlacesTableViewController.swift
 //  Metro
 //
-//  Created by Eduardo Valencia on 3/28/17.
+//  Created by Eduardo Valencia on 3/29/17.
 //  Copyright © 2017 Eduardo Valencia. All rights reserved.
 //
 
 import UIKit
 
-class EventSearchResultsTableViewController: UITableViewController, UISearchResultsUpdating {
-    
-    var filteredEvents: [MetroEvent] = []
+class MapPlacesTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +18,7 @@ class EventSearchResultsTableViewController: UITableViewController, UISearchResu
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        self.tableView.backgroundColor = Tools.colorPicker(2, alpha: 1)
+        self.tableView.indicatorStyle = .white
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,38 +29,26 @@ class EventSearchResultsTableViewController: UITableViewController, UISearchResu
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
+        
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredEvents.count
+        
+        return CoreDataTools.storedStationsWithCoordinates?.count ?? 0
     }
     
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else {
-            return
-        }
-        guard let events = CoreDataTools.storedEvents else {
-            return
-        }
-        filteredEvents = events.filter({
-            $0.name?.lowercased().localizedStandardContains(text.lowercased()) ?? false
-        })
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-    }
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "reuseIdentifier")
-
+        
         // Configure the cell...
-        cell.textLabel?.text = filteredEvents[indexPath.row].name
+
+        cell.textLabel?.text = CoreDataTools.storedStationsWithCoordinates?[indexPath.row].name
         cell.backgroundColor = .clear
         cell.textLabel?.textColor = .white
         return cell
     }
-
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

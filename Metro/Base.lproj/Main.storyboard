@@ -26,7 +26,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
         </scene>
-        <!--Item-->
+        <!--Scanner-->
         <scene sceneID="H21-4v-iWb">
             <objects>
                 <viewController id="Q2J-3x-eY7" sceneMemberID="viewController">
@@ -49,7 +49,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="mXz-z4-cHW"/>
+                    <tabBarItem key="tabBarItem" title="Scanner" id="mXz-z4-cHW"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sBu-Hk-MzN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -75,11 +75,11 @@
             </objects>
             <point key="canvasLocation" x="2983" y="-591"/>
         </scene>
-        <!--Item-->
+        <!--Events-->
         <scene sceneID="VtW-js-bmg">
             <objects>
                 <navigationController id="TvU-Qa-TFH" customClass="MainNavigationViewController" customModule="Metro" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="v0y-XQ-gLx"/>
+                    <tabBarItem key="tabBarItem" title="Events" id="v0y-XQ-gLx"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="qsU-zU-nsy">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -111,11 +111,11 @@
             </objects>
             <point key="canvasLocation" x="2982" y="139"/>
         </scene>
-        <!--Item-->
+        <!--Metro-->
         <scene sceneID="RnW-lS-hQ3">
             <objects>
                 <navigationController id="psj-gL-4Vt" customClass="MainNavigationViewController" customModule="Metro" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="uwI-ZJ-21y"/>
+                    <tabBarItem key="tabBarItem" title="Metro" id="uwI-ZJ-21y"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="JFP-1b-VcF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -141,6 +141,7 @@
                         <segue destination="psj-gL-4Vt" kind="relationship" relationship="viewControllers" id="FqC-OK-sxS"/>
                         <segue destination="Q2J-3x-eY7" kind="relationship" relationship="viewControllers" id="z0d-Tl-ek8"/>
                         <segue destination="TvU-Qa-TFH" kind="relationship" relationship="viewControllers" id="4AU-5u-Wbg"/>
+                        <segue destination="bJS-XW-yxQ" kind="relationship" relationship="viewControllers" id="u18-S1-4Dj"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zke-ow-kXx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -164,6 +165,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E3l-9A-PU2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2982" y="835"/>
+        </scene>
+        <!--Map-->
+        <scene sceneID="XaM-fu-Ye5">
+            <objects>
+                <viewController id="bJS-XW-yxQ" customClass="MapViewController" customModule="Metro" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fEL-fq-tUk"/>
+                        <viewControllerLayoutGuide type="bottom" id="uQX-GI-SYW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jWk-mI-Cbe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Map" id="DWh-Ma-Hx5"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HUP-tb-v8F" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2190" y="1540"/>
         </scene>
     </scenes>
 </document>

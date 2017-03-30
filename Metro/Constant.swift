@@ -82,4 +82,16 @@ struct Constant {
         static let statusLabelBottomSeparation: CGFloat = 120
     }
     
+    struct VisualEffects {
+        static let mapBlurContentViewBackgroundColor: UIColor = Tools.colorPicker(2, alpha: 0.7)
+    }
+    
+    struct HandleIcon {
+        static let backgroundColor: UIColor = Tools.colorPicker(1, alpha: 1)
+        static let cornerRadius: CGFloat = Constant.HandleIcon.height/2
+        static let height: CGFloat = 5
+        static let topSeparation: CGFloat = 10
+        static let width: CGFloat = 40
+    }
+    
 }

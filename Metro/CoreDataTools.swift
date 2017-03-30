@@ -13,6 +13,8 @@ class CoreDataTools: NSObject {
     
     static var storedLines: [Line]?
     static var storedStations: [Station]?
+    static var storedEvents: [MetroEvent]?
+    static var storedStationsWithCoordinates: [Station]?
     
     static func getContext() -> NSManagedObjectContext? {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
@@ -101,17 +103,6 @@ class CoreDataTools: NSObject {
             return
         }
         
-        // FIXME: Debug only. Delete all previous data.
-        /*let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Line")
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        guard let persistentStoreCoordinator = getPersistentStoreCoordinator() else {
-            return
-        }
-        do {
-            try persistentStoreCoordinator.execute(deleteRequest, with: managedContext)
-        } catch {
-            print(error.localizedDescription)
-        }*/
         storedLines = []
         let lines: [[String : Any]] = [
             ["name" : "1", "type" : 0, "colors" : [4]],
@@ -156,18 +147,6 @@ class CoreDataTools: NSObject {
         guard let managedContext = getContext() else {
             return
         }
-        
-        //FIXME: DELETE
-        /*let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Station")
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        guard let persistentStoreCoordinator = getPersistentStoreCoordinator() else {
-            return
-        }
-        do {
-            try persistentStoreCoordinator.execute(deleteRequest, with: managedContext)
-        } catch {
-            print(error.localizedDescription)
-        }*/
         
         storedStations = []
         let stations: [[String : Any]] = [
@@ -222,6 +201,114 @@ class CoreDataTools: NSObject {
             print(error.localizedDescription)
         }
         
+    }
+    
+    static func createMetroEvents(events: [[String : Any]]) {
+        guard let managedContext = getContext() else {
+            return
+        }
+        storedEvents = []
+        
+        // Delete previous events.
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MetroEvent")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        guard let persistentStoreCoordinator = getPersistentStoreCoordinator() else {
+            return
+        }
+        do {
+            try persistentStoreCoordinator.execute(deleteRequest, with: managedContext)
+        } catch {
+            print(error.localizedDescription)
+        }
+ 
+        for i in 0 ..< events.count {
+            let currentName = events[i]["Name"] as? String ?? ""
+            let currentCategory = events[i]["Category"] as? String ?? ""
+            let currentImageURL = URL(string: events[i]["Image"] as? String ?? "")
+            let currentDescription = events[i]["Description"] as? String ?? ""
+            let currentDate = events[i]["Date"] as? String ?? ""
+            let currentStartTime = events[i]["StartTime"] as? String ?? ""
+            let currentEndTime = events[i]["EndTime"] as? String ?? ""
+            let currentStationName = events[i]["Station"] as? String ?? ""
+            let currentStation = storedStations?.first(where: {
+                $0.name == currentStationName
+            })
+            let currentLineName = events[i]["Line"] as? String ?? ""
+            let currentLine = storedLines?.first(where: {
+                $0.name == currentLineName
+            })
+            let currentEvent = MetroEvent(name: currentName, category: currentCategory, imageURLString: currentImageURL?.absoluteString, eventDescription: currentDescription, date: currentDate, startTime: currentStartTime, endTime: currentEndTime, station: currentStation, line: currentLine, context: managedContext)
+            storedEvents?.append(currentEvent)
+        }
+        do {
+            try managedContext.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    static func getStationsCoordinates() {
+        guard let managedContext = getContext() else {
+            return
+        }
+        storedStationsWithCoordinates = []
+        MetroBackend.getCoordinates(completion: {(stations, error) -> Void in
+            if error == nil && stations != nil {
+                guard let keys = stations?.keys else {
+                    return
+                }
+                for currentKey in keys {
+                    let currentLine = storedLines?.first(where: {
+                        $0.name == currentKey
+                    })
+                    guard let currentStations = currentLine?.stations?.allObjects as? [Station], let currentStationsCoordinates = stations?[currentKey] as? [[String : Any]] else {
+                        print("Continue first")
+                        continue
+                    }
+                    for i in 0 ..< currentStationsCoordinates.count {
+                        let currentName = currentStationsCoordinates[i]["title"] as? String ?? ""
+                        guard let currentStation = currentStations.first(where: {
+                            $0.name == currentName
+                        }) else {
+                            continue
+                        }
+                        guard let latlng = currentStationsCoordinates[i]["latlng"] as? [String : Float] else {
+                            continue
+                        }
+                        guard let currentLatitude = latlng["latitude"], let currentLongitude = latlng["longitude"] else {
+                            print("Continue")
+                            continue
+                        }
+                        currentStation.latitude = currentLatitude
+                        currentStation.longitude = currentLongitude
+                        storedStationsWithCoordinates?.append(currentStation)
+                    }
+                }
+                do {
+                    try managedContext.save()
+                } catch {
+                    print(error.localizedDescription)
+                }
+            } else {
+                print(error?.localizedDescription ?? "")
+            }
+        })
+    }
+    
+    static func fetchData() {
+        guard let managedContext = getContext() else {
+            return
+        }
+        var fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Line")
+        guard let lines = try? managedContext.fetch(fetchRequest) as? [Line] else {
+            return
+        }
+        storedLines = lines
+        fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Station")
+        guard let stations = try? managedContext.fetch(fetchRequest) as? [Station] else {
+            return
+        }
+        storedStations = stations
     }
 
 }

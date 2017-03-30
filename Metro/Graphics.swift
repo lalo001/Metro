@@ -160,4 +160,24 @@ class Graphics {
         view.addConstraints(cancelVerticalConstraint)
         return cancelButton
     }
+    
+    // MARK: - Handle Icon
+    
+    static func createHandleIcon(in view: UIView) -> UIView {
+        let handleIcon = UIView()
+        handleIcon.translatesAutoresizingMaskIntoConstraints = false
+        handleIcon.layer.cornerRadius = Constant.HandleIcon.cornerRadius
+        handleIcon.backgroundColor = Constant.HandleIcon.backgroundColor
+        view.addSubview(handleIcon)
+        
+        // Add handleIcon Constraints
+        let handleIconWidth = NSLayoutConstraint(item: handleIcon, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: Constant.HandleIcon.width)
+        let handleIconCenterX = NSLayoutConstraint(item: view, attribute: .centerX, relatedBy: .equal, toItem: handleIcon, attribute: .centerX, multiplier: 1, constant: 0)
+        let handleIconVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-topSeparation-[handleIcon(height)]", options: NSLayoutFormatOptions(), metrics: ["topSeparation" : Constant.HandleIcon.topSeparation, "height" : Constant.HandleIcon.height], views: ["handleIcon" : handleIcon])
+        view.addConstraint(handleIconWidth)
+        view.addConstraint(handleIconCenterX)
+        view.addConstraints(handleIconVerticalConstraints)
+        
+        return handleIcon
+    }
 }

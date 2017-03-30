@@ -5,8 +5,20 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="serviceTypeRaw" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" customClassName="ServiceType" syncable="YES"/>
+        <relationship name="events" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MetroEvent" inverseName="line" inverseEntity="MetroEvent" syncable="YES"/>
         <relationship name="lineEnds" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Station" inverseName="endingOfLines" inverseEntity="Station" syncable="YES"/>
         <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Station" inverseName="lines" inverseEntity="Station" syncable="YES"/>
+    </entity>
+    <entity name="MetroEvent" representedClassName=".MetroEvent" syncable="YES" codeGenerationType="category">
+        <attribute name="category" attributeType="String" syncable="YES"/>
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="endTime" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="eventDescription" attributeType="String" syncable="YES"/>
+        <attribute name="imageURLString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="startTime" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="line" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Line" inverseName="events" inverseEntity="Line" syncable="YES"/>
+        <relationship name="station" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Station" inverseName="events" inverseEntity="Station" syncable="YES"/>
     </entity>
     <entity name="Session" representedClassName=".Session" syncable="YES" codeGenerationType="class">
         <attribute name="lastUpdateDate" optional="YES" attributeType="Date" defaultDateTimeInterval="-534457140" usesScalarValueType="NO" syncable="YES"/>
@@ -18,16 +30,20 @@
         <attribute name="hasPOI" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="hasRestroom" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isLineEnd" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="statusRaw" attributeType="Integer 16" usesScalarValueType="YES" customClassName="Status" syncable="YES"/>
         <relationship name="endingOfLines" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Line" inverseName="lineEnds" inverseEntity="Line" syncable="YES"/>
+        <relationship name="events" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MetroEvent" inverseName="station" inverseEntity="MetroEvent" syncable="YES"/>
         <relationship name="lastSessionFromStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Session" inverseName="fromStation" inverseEntity="Session" syncable="YES"/>
         <relationship name="lastSessionToStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Session" inverseName="toStation" inverseEntity="Session" syncable="YES"/>
         <relationship name="lines" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Line" inverseName="stations" inverseEntity="Line" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Line" positionX="-27" positionY="342" width="128" height="135"/>
-        <element name="Session" positionX="-414" positionY="371" width="128" height="88"/>
-        <element name="Station" positionX="-261" positionY="366" width="128" height="195"/>
+        <element name="Line" positionX="-164" positionY="198" width="128" height="148"/>
+        <element name="Session" positionX="-596" positionY="344" width="128" height="88"/>
+        <element name="Station" positionX="-414" positionY="225" width="128" height="238"/>
+        <element name="MetroEvent" positionX="-216" positionY="441" width="128" height="178"/>
     </elements>
 </model>

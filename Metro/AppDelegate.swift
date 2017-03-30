@@ -19,8 +19,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if CoreDataTools.getLastSession() == nil {
             CoreDataTools.createLines()
             CoreDataTools.createStations()
+        } else {
+            CoreDataTools.fetchData()
         }
         CoreDataTools.createSession()
+        CoreDataTools.getStationsCoordinates()
+        MetroBackend.getEvents(completion: {(events, error) -> Void in
+            if error != nil && CoreDataTools.storedEvents == nil {
+                CoreDataTools.storedEvents = []
+            } else if error == nil {
+                if let events = events {
+                    CoreDataTools.createMetroEvents(events: events)
+                }
+            }
+        })
         return true
     }
 

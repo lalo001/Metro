@@ -37,6 +37,11 @@
 		20610E831E5B7DCE00BA6700 /* Station.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20610E821E5B7DCE00BA6700 /* Station.swift */; };
 		20610E851E5B974200BA6700 /* Graveyard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20610E841E5B974200BA6700 /* Graveyard.swift */; };
 		2083393E1E8C477C0002EFF2 /* MetroEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2083393D1E8C477C0002EFF2 /* MetroEvent.swift */; };
+		208339421E8C6A0C0002EFF2 /* EventCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208339411E8C6A0C0002EFF2 /* EventCellTableViewCell.swift */; };
+		208339461E8CB9560002EFF2 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208339431E8CB9560002EFF2 /* MapViewController.swift */; };
+		208339471E8CB9560002EFF2 /* CustomMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208339441E8CB9560002EFF2 /* CustomMapView.swift */; };
+		208339481E8CB9560002EFF2 /* LocationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208339451E8CB9560002EFF2 /* LocationButton.swift */; };
+		2083394B1E8CC5940002EFF2 /* MapPlacesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2083394A1E8CC5940002EFF2 /* MapPlacesTableViewController.swift */; };
 		2090D07B1E875AA600E5E35C /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2090D07A1E875AA600E5E35C /* Constant.swift */; };
 		2090D07D1E8767E300E5E35C /* Graphics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2090D07C1E8767E300E5E35C /* Graphics.swift */; };
 		2099860F1E8635180025C3E3 /* PickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2099860E1E8635180025C3E3 /* PickerButton.swift */; };
@@ -75,6 +80,11 @@
 		20610E821E5B7DCE00BA6700 /* Station.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Station.swift; sourceTree = "<group>"; };
 		20610E841E5B974200BA6700 /* Graveyard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graveyard.swift; sourceTree = "<group>"; };
 		2083393D1E8C477C0002EFF2 /* MetroEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MetroEvent.swift; path = Metro/MetroEvent.swift; sourceTree = "<group>"; };
+		208339411E8C6A0C0002EFF2 /* EventCellTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventCellTableViewCell.swift; path = Metro/EventCellTableViewCell.swift; sourceTree = "<group>"; };
+		208339431E8CB9560002EFF2 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		208339441E8CB9560002EFF2 /* CustomMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomMapView.swift; sourceTree = "<group>"; };
+		208339451E8CB9560002EFF2 /* LocationButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationButton.swift; sourceTree = "<group>"; };
+		2083394A1E8CC5940002EFF2 /* MapPlacesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapPlacesTableViewController.swift; sourceTree = "<group>"; };
 		2090D07A1E875AA600E5E35C /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		2090D07C1E8767E300E5E35C /* Graphics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graphics.swift; sourceTree = "<group>"; };
 		2099860E1E8635180025C3E3 /* PickerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerButton.swift; sourceTree = "<group>"; };
@@ -148,6 +158,7 @@
 		2034942F1E5A2939001B9F7C = {
 			isa = PBXGroup;
 			children = (
+				208339411E8C6A0C0002EFF2 /* EventCellTableViewCell.swift */,
 				2083393D1E8C477C0002EFF2 /* MetroEvent.swift */,
 				2034943A1E5A2939001B9F7C /* Metro */,
 				203494391E5A2939001B9F7C /* Products */,
@@ -176,6 +187,7 @@
 				20610E7C1E5B6DD100BA6700 /* SearchRouteViewController.swift */,
 				2008F6F21E8B24D700170643 /* EventsViewController.swift */,
 				2008F6F61E8B401A00170643 /* EventSearchResultsTableViewController.swift */,
+				208339491E8CB95A0002EFF2 /* Map */,
 				2008F7041E8C0F4C00170643 /* Scanner */,
 				2007B0CA1E84BC7800655282 /* .swiftlint.yml */,
 				203494451E5A2939001B9F7C /* Assets.xcassets */,
@@ -186,6 +198,17 @@
 				203494421E5A2939001B9F7C /* Metro.xcdatamodeld */,
 			);
 			path = Metro;
+			sourceTree = "<group>";
+		};
+		208339491E8CB95A0002EFF2 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				208339431E8CB9560002EFF2 /* MapViewController.swift */,
+				2083394A1E8CC5940002EFF2 /* MapPlacesTableViewController.swift */,
+				208339441E8CB9560002EFF2 /* CustomMapView.swift */,
+				208339451E8CB9560002EFF2 /* LocationButton.swift */,
+			);
+			name = Map;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -283,16 +306,20 @@
 			files = (
 				2034943E1E5A2939001B9F7C /* ViewController.swift in Sources */,
 				2090D07B1E875AA600E5E35C /* Constant.swift in Sources */,
+				2083394B1E8CC5940002EFF2 /* MapPlacesTableViewController.swift in Sources */,
 				2083393E1E8C477C0002EFF2 /* MetroEvent.swift in Sources */,
 				2008F7021E8C0F4700170643 /* ScanBorder.swift in Sources */,
+				208339421E8C6A0C0002EFF2 /* EventCellTableViewCell.swift in Sources */,
 				20610E7F1E5B6ECD00BA6700 /* MainNavigationViewController.swift in Sources */,
 				2008F6F71E8B401A00170643 /* EventSearchResultsTableViewController.swift in Sources */,
 				203494571E5A658A001B9F7C /* LocationView.swift in Sources */,
+				208339481E8CB9560002EFF2 /* LocationButton.swift in Sources */,
 				203494591E5A65A1001B9F7C /* NotificationsView.swift in Sources */,
 				202D53B01E8A28A80016A946 /* Circle.swift in Sources */,
 				2008F7001E8C0F4700170643 /* ScannerViewController.swift in Sources */,
 				203494551E5A63CB001B9F7C /* WelcomeView.swift in Sources */,
 				2090D07D1E8767E300E5E35C /* Graphics.swift in Sources */,
+				208339461E8CB9560002EFF2 /* MapViewController.swift in Sources */,
 				20610E811E5B73F700BA6700 /* MainTabBarViewController.swift in Sources */,
 				203494441E5A2939001B9F7C /* Metro.xcdatamodeld in Sources */,
 				2099860F1E8635180025C3E3 /* PickerButton.swift in Sources */,
@@ -303,6 +330,7 @@
 				2039F4C71E830B3500FE9F98 /* CoreDataTools.swift in Sources */,
 				20610E831E5B7DCE00BA6700 /* Station.swift in Sources */,
 				2008F7011E8C0F4700170643 /* ScanOverlay.swift in Sources */,
+				208339471E8CB9560002EFF2 /* CustomMapView.swift in Sources */,
 				2007B0CE1E84C6DD00655282 /* UIObjects.swift in Sources */,
 				20610E7D1E5B6DD100BA6700 /* SearchRouteViewController.swift in Sources */,
 				2008F7031E8C0F4700170643 /* ScanAcceptedBorder.swift in Sources */,
