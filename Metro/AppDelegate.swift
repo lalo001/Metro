@@ -8,22 +8,42 @@
 
 import UIKit
 import CoreData
+import WatchConnectivity
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    var session: WCSession? {
+        didSet {
+            if let session = session {
+                session.delegate = self
+                session.activate()
+            }
+        }
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        // Check if there is a session stored. If not, create sessionm lines and stations.
         if CoreDataTools.getLastSession() == nil {
             CoreDataTools.createLines()
             CoreDataTools.createStations()
+            CoreDataTools.createSession() // Create a new session.
         } else {
+            // If there's a session fetch everything from Core Data.
             CoreDataTools.fetchData()
         }
-        CoreDataTools.createSession()
-        CoreDataTools.getStationsCoordinates()
+        CoreDataTools.getStationsCoordinates() // Update coordinates of stations from API.
+        
+        // Init Watch Connectivity session if supported.
+        if WCSession.isSupported() {
+            session = WCSession.default()
+        }
+        
+        // Update events from API.
         MetroBackend.getEvents(completion: {(events, error) -> Void in
             if error != nil && CoreDataTools.storedEvents == nil {
                 CoreDataTools.storedEvents = []
@@ -132,4 +152,64 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+}
+
+extension AppDelegate: WCSessionDelegate {
+    
+    /** Called when all delegate callbacks for the previously selected watch has occurred. The session can be re-activated for the now selected watch using activateSession. */
+    @available(iOS 9.3, *)
+    func sessionDidDeactivate(_ session: WCSession) {
+        
+    }
+    
+    /** Called when the session can no longer be used to modify or add any new transfers and, all interactive messages will be cancelled, but delegate callbacks for background transfers can still occur. This will happen when the selected watch is being changed. */
+    @available(iOS 9.3, *)
+    func sessionDidBecomeInactive(_ session: WCSession) {
+        
+    }
+
+    /** Called when the session has completed activation. If session state is WCSessionActivationStateNotActivated there will be an error with more details. */
+    @available(iOS 9.3, *)
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        print(activationState)
+        if let error = error {
+            print(error.localizedDescription)
+        }
+    }
+    
+    
+    // Receive and reply message with Data from Apple Watch.
+    func session(_ session: WCSession, didReceiveMessageData messageData: Data, replyHandler: @escaping (Data) -> Void) {
+        let urlString = String(data: messageData, encoding: .utf8) ?? ""
+        if let imageURL = URL(string: urlString) {
+            if let imageData = try? Data(contentsOf: imageURL) {
+                replyHandler(imageData)
+            }
+        }
+        replyHandler(Data())
+    }
+
+    // Receive and reply message with [String : Any] from Apple Watch.
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
+        guard let events = CoreDataTools.storedEvents else {
+            replyHandler(["error" : "No events"])
+            return
+        }
+        var eventsDictionary: [[String : Any]] = []
+        for i in 0 ..< events.count {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd/MM/yyyy"
+            let date = dateFormatter.string(from: events[i].date as Date? ?? Date())
+            let currentDictionary = ["name" : events[i].name as Any, "imageURL" : events[i].imageURLString ?? "", "date" : date, "description" : events[i].eventDescription as Any]
+            eventsDictionary.append(currentDictionary)
+        }
+        do {
+            let json = try JSONSerialization.data(withJSONObject: eventsDictionary, options: .prettyPrinted)
+            let decode = try JSONSerialization.jsonObject(with: json, options: .allowFragments)
+            replyHandler(["eventsData" : decode])
+        } catch {
+            replyHandler(["error" : error.localizedDescription])
+            print(error.localizedDescription)
+        }
+    }
 }

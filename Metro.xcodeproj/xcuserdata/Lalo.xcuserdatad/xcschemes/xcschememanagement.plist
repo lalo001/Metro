@@ -4,6 +4,36 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Metro Watch (Complication).xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>Metro Watch (Notification).xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>Metro Watch.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>Metro WatchKit (Complication).xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
+		<key>Metro WatchKit (Notification).xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
+		<key>Metro WatchKit.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
 		<key>Metro.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -13,6 +43,16 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>203494371E5A2939001B9F7C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2083394F1E8D40D90002EFF2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2083397A1E8D43540002EFF2</key>
 		<dict>
 			<key>primary</key>
 			<true/>

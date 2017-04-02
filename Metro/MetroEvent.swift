@@ -44,4 +44,5 @@ public class MetroEvent: NSManagedObject {
         self.line = line
         self.line?.addToEvents(self)
     }
+
 }

@@ -9,3 +9,5 @@ function_parameter_count:
 - 6 #warning
 function_body_length:
 - 70 #warning
+excluded:
+- Metro/Metro Watch

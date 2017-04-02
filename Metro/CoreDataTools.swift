@@ -11,93 +11,23 @@ import CoreData
 
 class CoreDataTools: NSObject {
     
+    /// Lines stored in Core Data.
     static var storedLines: [Line]?
+    
+    /// Stations stored in Core Data.
     static var storedStations: [Station]?
+    
+    /// Events stored in Core Data.
     static var storedEvents: [MetroEvent]?
+    
+    /// Stations stored in Core Data that have coordinates.
     static var storedStationsWithCoordinates: [Station]?
     
-    static func getContext() -> NSManagedObjectContext? {
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            return appDelegate.persistentContainer.viewContext
-        }
-        return nil
-    }
+    // MARK: - Create Functions
     
-    static func getPersistentStoreCoordinator() -> NSPersistentStoreCoordinator? {
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            return appDelegate.persistentContainer.persistentStoreCoordinator
-        }
-        return nil
-    }
-    
-    static func createSession() {
-        guard let managedContext = getContext() else {
-            return
-        }
-        if getLastSession() == nil {
-            let _ = Session(entity: Session.entity(), insertInto: managedContext)
-            do {
-                try managedContext.save()
-                print("Saved new session.")
-            } catch {
-                print(error.localizedDescription)
-            }
-        } else {
-            print("A session already exists.")
-        }
-    }
-    
-    static func getLastSession() -> Session? {
-        guard let managedContext = getContext() else {
-            return nil
-        }
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Session")
-        do {
-            guard let results: Session  = try managedContext.fetch(fetchRequest).first as? Session else {
-                return nil
-            }
-            return results
-        } catch {
-            print(error.localizedDescription)
-        }
-        return nil
-    }
-    
-    static func updateSession(lastUpdateDate: Date?, fromStation: Station?, toStation: Station?) {
-        guard let managedContext = getContext() else {
-            return
-        }
-        guard let session = getLastSession() else {
-            return
-        }
-        if let lastUpdateDate = lastUpdateDate {
-            session.lastUpdateDate = lastUpdateDate as NSDate
-        }
-        if let fromStation = fromStation {
-            session.fromStation = fromStation
-            fromStation.lastSessionFromStation = session
-        }
-        if let toStation = toStation {
-            session.toStation = toStation
-            toStation.lastSessionToStation = session
-        }
-        do {
-            try managedContext.save()
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-    
-    static func getLastSessionFromToStations() -> (Station?, Station?) {
-        guard let session = getLastSession() else {
-            return (nil, nil)
-        }
-        guard let fromStation = session.fromStation, let toStation = session.toStation else {
-            return (nil, nil)
-        }
-        return (fromStation, toStation)
-    }
-
+    /**
+     Create and store on Core Data all the lines used by the app.
+     */
     static func createLines() {
         guard let managedContext = getContext() else {
             return
@@ -143,6 +73,81 @@ class CoreDataTools: NSObject {
         }
     }
     
+    /**
+     Store Metro Events acquired from the API in Core Data.
+     
+     - parameters:
+     - events: An array of dictionaries containing the events with its required attributes.
+     - warning: All previously stored events will be deleted and replaced with the events passed to this function.
+     */
+    static func createMetroEvents(events: [[String : Any]]) {
+        guard let managedContext = getContext() else {
+            return
+        }
+        storedEvents = []
+        
+        // Delete previous events.
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MetroEvent")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        guard let persistentStoreCoordinator = getPersistentStoreCoordinator() else {
+            return
+        }
+        do {
+            try persistentStoreCoordinator.execute(deleteRequest, with: managedContext)
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        for i in 0 ..< events.count {
+            let currentName = events[i]["Name"] as? String ?? ""
+            let currentCategory = events[i]["Category"] as? String ?? ""
+            let currentImageURL = URL(string: events[i]["Image"] as? String ?? "")
+            let currentDescription = events[i]["Description"] as? String ?? ""
+            let currentDate = events[i]["Date"] as? String ?? ""
+            let currentStartTime = events[i]["StartTime"] as? String ?? ""
+            let currentEndTime = events[i]["EndTime"] as? String ?? ""
+            let currentStationName = events[i]["Station"] as? String ?? ""
+            let currentStation = storedStations?.first(where: {
+                $0.name == currentStationName
+            })
+            let currentLineName = events[i]["Line"] as? String ?? ""
+            let currentLine = storedLines?.first(where: {
+                $0.name == currentLineName
+            })
+            let currentEvent = MetroEvent(name: currentName, category: currentCategory, imageURLString: currentImageURL?.absoluteString, eventDescription: currentDescription, date: currentDate, startTime: currentStartTime, endTime: currentEndTime, station: currentStation, line: currentLine, context: managedContext)
+            storedEvents?.append(currentEvent)
+        }
+        do {
+            try managedContext.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    /**
+     Create a new session object and store it in Core Data.
+     - note: It can only exist one session at any given time. Calling this function after a session has been created will have no effect.
+     */
+    static func createSession() {
+        guard let managedContext = getContext() else {
+            return
+        }
+        if getLastSession() == nil {
+            let _ = Session(entity: Session.entity(), insertInto: managedContext)
+            do {
+                try managedContext.save()
+                print("Saved new session.")
+            } catch {
+                print(error.localizedDescription)
+            }
+        } else {
+            print("A session already exists.")
+        }
+    }
+    
+    /**
+     Create and store on Core Data all the stations used by the app. It also creates the neccessary relationships between stations and lines.
+     */
     static func createStations() {
         guard let managedContext = getContext() else {
             return
@@ -203,50 +208,72 @@ class CoreDataTools: NSObject {
         
     }
     
-    static func createMetroEvents(events: [[String : Any]]) {
-        guard let managedContext = getContext() else {
-            return
+    // MARK: Get Functions
+    
+    /**
+     Get the current managed context for Core Data's persistent container.
+     
+     - returns: A [NSManagedObjectContext](apple-reference-documentation://hseREZ0QHW) object.
+    */
+    static func getContext() -> NSManagedObjectContext? {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            return appDelegate.persistentContainer.viewContext
         }
-        storedEvents = []
-        
-        // Delete previous events.
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MetroEvent")
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        guard let persistentStoreCoordinator = getPersistentStoreCoordinator() else {
-            return
-        }
-        do {
-            try persistentStoreCoordinator.execute(deleteRequest, with: managedContext)
-        } catch {
-            print(error.localizedDescription)
-        }
- 
-        for i in 0 ..< events.count {
-            let currentName = events[i]["Name"] as? String ?? ""
-            let currentCategory = events[i]["Category"] as? String ?? ""
-            let currentImageURL = URL(string: events[i]["Image"] as? String ?? "")
-            let currentDescription = events[i]["Description"] as? String ?? ""
-            let currentDate = events[i]["Date"] as? String ?? ""
-            let currentStartTime = events[i]["StartTime"] as? String ?? ""
-            let currentEndTime = events[i]["EndTime"] as? String ?? ""
-            let currentStationName = events[i]["Station"] as? String ?? ""
-            let currentStation = storedStations?.first(where: {
-                $0.name == currentStationName
-            })
-            let currentLineName = events[i]["Line"] as? String ?? ""
-            let currentLine = storedLines?.first(where: {
-                $0.name == currentLineName
-            })
-            let currentEvent = MetroEvent(name: currentName, category: currentCategory, imageURLString: currentImageURL?.absoluteString, eventDescription: currentDescription, date: currentDate, startTime: currentStartTime, endTime: currentEndTime, station: currentStation, line: currentLine, context: managedContext)
-            storedEvents?.append(currentEvent)
-        }
-        do {
-            try managedContext.save()
-        } catch {
-            print(error.localizedDescription)
-        }
+        return nil
     }
     
+    /**
+     Get the session that is currently stored in Core Data.
+     
+     - returns: If a session exists, it returns a Session object.
+     */
+    static func getLastSession() -> Session? {
+        guard let managedContext = getContext() else {
+            return nil
+        }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Session")
+        do {
+            guard let results: Session  = try managedContext.fetch(fetchRequest).first as? Session else {
+                return nil
+            }
+            return results
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
+    
+    /**
+     Get the from-station and to-station selected on Search Route Controller during the user's last session.
+     
+     - returns: A tuple of the form (toStation, fromStation).
+     - note: Both elements will always either exist or be nil.
+     */
+    static func getLastSessionFromToStations() -> (Station?, Station?) {
+        guard let session = getLastSession() else {
+            return (nil, nil)
+        }
+        guard let fromStation = session.fromStation, let toStation = session.toStation else {
+            return (nil, nil)
+        }
+        return (fromStation, toStation)
+    }
+    
+    /**
+     Get the current Core Data's persistent store coordinator.
+     
+     - returns: A [NSPersistentStoreCoordinator](apple-reference-documentation://hsRdlxSPjF) object.
+     */
+    static func getPersistentStoreCoordinator() -> NSPersistentStoreCoordinator? {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            return appDelegate.persistentContainer.persistentStoreCoordinator
+        }
+        return nil
+    }
+    
+    /**
+     Get from the API the coordinates for each station and fill and array with the stations that do have a corresponding coordinate.
+     */
     static func getStationsCoordinates() {
         guard let managedContext = getContext() else {
             return
@@ -295,6 +322,45 @@ class CoreDataTools: NSObject {
         })
     }
     
+    /**
+     Update the attributes of the session stored in Core Data.
+     
+     - parameters:
+        - lastUpdateDate: The date in which the stations and lines were last updated on.
+        - fromStation: The most recent from-station selected by the user on Search Route Controller.
+        - toStation: The most recent to-station selected by the user on Search Route Controller.
+     - note: Parameters left nil will not be updated.
+     */
+    static func updateSession(lastUpdateDate: Date?, fromStation: Station?, toStation: Station?) {
+        guard let managedContext = getContext() else {
+            return
+        }
+        guard let session = getLastSession() else {
+            return
+        }
+        if let lastUpdateDate = lastUpdateDate {
+            session.lastUpdateDate = lastUpdateDate as NSDate
+        }
+        if let fromStation = fromStation {
+            session.fromStation = fromStation
+            fromStation.lastSessionFromStation = session
+        }
+        if let toStation = toStation {
+            session.toStation = toStation
+            toStation.lastSessionToStation = session
+        }
+        do {
+            try managedContext.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    // MARK: - Fetch Functions
+    
+    /**
+     Cache all the data stored on Core Data related with events, lines, and stations.
+     */
     static func fetchData() {
         guard let managedContext = getContext() else {
             return
@@ -308,7 +374,15 @@ class CoreDataTools: NSObject {
         guard let stations = try? managedContext.fetch(fetchRequest) as? [Station] else {
             return
         }
+        storedStationsWithCoordinates = stations?.filter({
+            $0.hasCoordinates
+        })
         storedStations = stations
+        fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MetroEvent")
+        guard let events = try? managedContext.fetch(fetchRequest) as? [MetroEvent] else {
+            return
+        }
+        storedEvents = events
     }
 
 }

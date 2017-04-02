@@ -24,6 +24,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, MKMapVie
     let slideViewHeightScale: CGFloat = 1.5
     var mainViewHeight: CGFloat = 0
     var slideViewSideHiddenConstant: CGFloat = 0
+    var tableViewController: MapPlacesTableViewController!
     
     // Map Variables
     var mapView: CustomMapView!
@@ -109,6 +110,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, MKMapVie
     // MARK: - UIPanGestureRecognizer Functions
     
     func panGestureDetected(_ gestureRecognizer: UIPanGestureRecognizer) {
+        let contentOffsetY = tableViewController.tableView.contentOffset.y
+        guard contentOffsetY <= 0 || contentOffsetY >= (tableViewController.tableView.contentSize.height - tableViewController.tableView.frame.height) else {
+            tableViewController.tableView.showsVerticalScrollIndicator = true
+            return
+        }
         let location = gestureRecognizer.translation(in: self.view)
         let velocity = gestureRecognizer.velocity(in: self.view)
         let downMaxY = mainViewHeight - alwaysVisibleHeight
@@ -121,6 +127,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, MKMapVie
             } else if velocity.y > 0 && futureOriginY > downMaxY {
                 futureOriginY = downMaxY
             }
+            tableViewController.tableView.showsVerticalScrollIndicator = false
             slideViewHeightConstraint?.constant = mainViewHeight - futureOriginY
             let slideViewHeight = self.view.frame.height
             let halfSlideView = (slideViewHeight - midStateHeight)/2
@@ -167,32 +174,33 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, MKMapVie
             } else {
                 slideViewHeightConstraint?.constant = mainViewHeight - futureOriginY
             }
-        }
-        let currentYOrigin = slideView.frame.origin.y
-        if currentYOrigin < midStateY && currentYOrigin >= topSeparation {
-            let distance = abs(midStateY - currentYOrigin)
-            let newAlpha = (distance * 0.4)/(midStateY - topSeparation)
-            DispatchQueue.main.async {
-                let duration = newAlpha >= 1 ? 0.5 : 0.15
-                UIView.animate(withDuration: duration, animations: {
-                    self.overlay.alpha = newAlpha
-                    var mapAlpha = 1 - newAlpha * 10
-                    if mapAlpha > 1 {
-                        mapAlpha = 1
-                    } else if mapAlpha < 0 {
-                        mapAlpha = 0
-                    }
-                    self.mapButtonContainer.alpha = mapAlpha
-                })
-            }
-        } else {
-            DispatchQueue.main.async {
-                self.overlay.alpha = 0
-                self.mapButtonContainer.alpha =  1
-                UIView.animate(withDuration: 0.3, animations: {
+            // Manage the alpha view.
+            let currentYOrigin = slideView.frame.origin.y
+            if currentYOrigin < midStateY && currentYOrigin >= topSeparation {
+                let distance = abs(midStateY - currentYOrigin)
+                let newAlpha = (distance * 0.4)/(midStateY - topSeparation)
+                DispatchQueue.main.async {
+                    let duration = newAlpha >= 1 ? 0.5 : 0.15
+                    UIView.animate(withDuration: duration, animations: {
+                        self.overlay.alpha = newAlpha
+                        var mapAlpha = 1 - newAlpha * 10
+                        if mapAlpha > 1 {
+                            mapAlpha = 1
+                        } else if mapAlpha < 0 {
+                            mapAlpha = 0
+                        }
+                        self.mapButtonContainer.alpha = mapAlpha
+                    })
+                }
+            } else {
+                DispatchQueue.main.async {
                     self.overlay.alpha = 0
                     self.mapButtonContainer.alpha =  1
-                })
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.overlay.alpha = 0
+                        self.mapButtonContainer.alpha =  1
+                    })
+                }
             }
         }
         gestureRecognizer.setTranslation(.zero, in: self.view)
@@ -331,7 +339,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate, MKMapVie
         container.addConstraint(titleLabelCenterX)
         container.addConstraints(titleLabelCenterVerticalConstraints)
         
-        let tableViewController = MapPlacesTableViewController()
+        tableViewController = MapPlacesTableViewController()
         self.addChildViewController(tableViewController)
         
         // Create tableView
