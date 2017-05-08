@@ -51,20 +51,10 @@ class SearchRouteViewController: UIViewController {
         let originLabelVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[originLabel]", options: NSLayoutFormatOptions(), metrics: nil, views: ["originLabel" : originLabel])
         container.addConstraints(originLabelHorizontalConstraints)
         container.addConstraints(originLabelVerticalConstraints)
-        
-        // Check if there are stations from last session. If not, create new ones.
-        /*var lastSessionStations = CoreDataTools.getLastSessionFromToStations()
-        if lastSessionStations.0 == nil || lastSessionStations.1 == nil {
-            if let fromStation = CoreDataTools.storedStations?.first, let toStation = CoreDataTools.storedStations?[1] {
-                CoreDataTools.updateSession(lastUpdateDate: nil, fromStation: fromStation, toStation: toStation)
-            }
-        }*/
+    
         let lastSessionStations = CoreDataTools.getLastSessionFromToStations()
         let fromStation = lastSessionStations.0
         let toStation = lastSessionStations.1
-        /*guard let fromStation = lastSessionStations.0, let toStation = lastSessionStations.1 else {
-            return
-        }*/
         currentFromStation = fromStation
         currentToStation = toStation
         
@@ -91,6 +81,29 @@ class SearchRouteViewController: UIViewController {
         searchButton = UIObjects.createRoundedButton(with: NSLocalizedString("searchRoute", comment: ""), in: self.view, target: self, action: #selector(self.searchRouteButtonTouched(_:)))
         
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if Store.shared.needsUpdate {
+            Store.shared.needsUpdate = false
+            if let currentStation = Store.shared.station {
+                if Store.shared.direction == .from {
+                    let fromStation = currentStation
+                    currentFromStation = fromStation
+                    self.updatePickers(newFromStation: fromStation, newToStation: currentToStation)
+                } else if Store.shared.direction == .to {
+                    let toStation = currentStation
+                    currentToStation = toStation
+                    self.updatePickers(newFromStation: currentFromStation, newToStation: toStation)
+                }
+                if let direction = Store.shared.direction {
+                    CoreDataTools.addToRecentStations(station: currentStation, with: direction)
+                }
+                Store.shared.station = nil
+                Store.shared.direction = nil
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,12 +122,7 @@ class SearchRouteViewController: UIViewController {
     
     // MARK: - Custom Functions
     
-    func updatePickers() {
-        
-        guard let newFromStation = currentToStation, let newToStation = currentFromStation else {
-            return
-        }
-        
+    func updatePickers(newFromStation: Station?, newToStation: Station?) {
         DispatchQueue.main.async {
             self.fromButtonContainer.removeFromSuperview()
             self.toButtonContainer.removeFromSuperview()
@@ -145,7 +153,6 @@ class SearchRouteViewController: UIViewController {
     }
     
     func stationButtonTouched(_ sender: PickerButton) {
-        print("Station touched.")
         guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "inputStation") as? InputStationViewController else {
             return
         }
@@ -166,12 +173,14 @@ class SearchRouteViewController: UIViewController {
     }
     
     func invertStationsButtonTouched(_ sender: UIButton) {
-        print("Invert Stations.")
-        updatePickers()
+        guard let currentToStation = currentToStation, let currentFromStation = currentFromStation else {
+            return
+        }
+        updatePickers(newFromStation: currentToStation, newToStation: currentFromStation)
     }
     
     func searchRouteButtonTouched(_ sender: UIButton) {
-        print("Search Royte.")
+        print("Search Route.")
     }
 
     /*

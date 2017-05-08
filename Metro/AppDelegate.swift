@@ -34,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             CoreDataTools.createSession() // Create a new session.
         } else {
             // If there's a session fetch everything from Core Data.
+            print("Fetching")
             CoreDataTools.fetchData()
         }
         CoreDataTools.getStationsCoordinates() // Update coordinates of stations from API.

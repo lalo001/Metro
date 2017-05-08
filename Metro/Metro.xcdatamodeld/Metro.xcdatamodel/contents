@@ -22,9 +22,9 @@
     </entity>
     <entity name="Session" representedClassName=".Session" syncable="YES" codeGenerationType="class">
         <attribute name="lastUpdateDate" optional="YES" attributeType="Date" defaultDateTimeInterval="-534457140" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="fromRecents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Station" inverseName="fromSessionRecents" inverseEntity="Station" syncable="YES"/>
+        <relationship name="fromRecents" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Station" inverseName="fromSessionRecents" inverseEntity="Station" syncable="YES"/>
         <relationship name="fromStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Station" inverseName="lastSessionFromStation" inverseEntity="Station" syncable="YES"/>
-        <relationship name="toRecents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Station" inverseName="toSessionRecents" inverseEntity="Station" syncable="YES"/>
+        <relationship name="toRecents" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Station" inverseName="toSessionRecents" inverseEntity="Station" syncable="YES"/>
         <relationship name="toStation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Station" inverseName="lastSessionToStation" inverseEntity="Station" syncable="YES"/>
     </entity>
     <entity name="Station" representedClassName=".Station" syncable="YES" codeGenerationType="category">

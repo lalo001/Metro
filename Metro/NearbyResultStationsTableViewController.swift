@@ -11,6 +11,7 @@ import UIKit
 class NearbyResultStationsTableViewController: UITableViewController {
     
     var filteredStations: [(Station, CGFloat)]?
+    var direction: PickerButton.Direction?
     
     override func loadView() {
         super.loadView()
@@ -54,7 +55,7 @@ class NearbyResultStationsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = StationTableViewCell(stationTuple: filteredStations?[indexPath.row])
-        
+
         // Configure the cell...
         
         return cell
@@ -66,6 +67,13 @@ class NearbyResultStationsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView.deselectRow(at: indexPath, animated: true)
+        Store.shared.needsUpdate = true
+        Store.shared.direction = direction
+        Store.shared.station = filteredStations?[indexPath.row].0
+        guard let parentVC = self.parent as? NearbyStationsViewController else {
+            return
+        }
+        parentVC.closeInput()
     }
     
     /*

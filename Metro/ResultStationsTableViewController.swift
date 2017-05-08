@@ -11,6 +11,7 @@ import UIKit
 class ResultStationsTableViewController: UITableViewController {
     
     var filteredStations: [Station]?
+    var direction: PickerButton.Direction?
     
     override func loadView() {
         super.loadView()
@@ -65,6 +66,16 @@ class ResultStationsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView.deselectRow(at: indexPath, animated: true)
+        Store.shared.needsUpdate = true
+        Store.shared.direction = direction
+        Store.shared.station = filteredStations?[indexPath.row]
+        guard let parentVC = self.parent as? InputStationViewController else {
+            return
+        }
+        DispatchQueue.main.async {
+            parentVC.searchTextField.resignFirstResponder()
+            parentVC.dismiss(animated: true, completion: nil)
+        }
     }
 
     /*

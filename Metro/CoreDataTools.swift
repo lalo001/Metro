@@ -33,6 +33,18 @@ class CoreDataTools: NSObject {
             return
         }
         
+        // Delete previous lines.
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Line")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        guard let persistentStoreCoordinator = getPersistentStoreCoordinator() else {
+            return
+        }
+        do {
+            try persistentStoreCoordinator.execute(deleteRequest, with: managedContext)
+        } catch {
+            print(error.localizedDescription)
+        }
+        
         storedLines = []
         let lines: [[String : Any]] = [
             ["name" : "1", "type" : 0, "colors" : [4]],
@@ -152,6 +164,17 @@ class CoreDataTools: NSObject {
         guard let managedContext = getContext() else {
             return
         }
+        // Delete previous stations.
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Station")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        guard let persistentStoreCoordinator = getPersistentStoreCoordinator() else {
+            return
+        }
+        do {
+            try persistentStoreCoordinator.execute(deleteRequest, with: managedContext)
+        } catch {
+            print(error.localizedDescription)
+        }
         
         storedStations = []
         let stations: [[String : Any]] = [
@@ -247,16 +270,12 @@ class CoreDataTools: NSObject {
      Get the from-station and to-station selected on Search Route Controller during the user's last session.
      
      - returns: A tuple of the form (toStation, fromStation).
-     - note: Both elements will always either exist or be nil.
      */
     static func getLastSessionFromToStations() -> (Station?, Station?) {
         guard let session = getLastSession() else {
             return (nil, nil)
         }
-        guard let fromStation = session.fromStation, let toStation = session.toStation else {
-            return (nil, nil)
-        }
-        return (fromStation, toStation)
+        return (session.fromStation, session.toStation)
     }
     
     /**
@@ -268,7 +287,7 @@ class CoreDataTools: NSObject {
         guard let session = getLastSession() else {
             return nil
         }
-        guard let recents = (direction == .from ? session.fromRecents?.allObjects : session.toRecents?.allObjects) as? [Station] else {
+        guard let recents = (direction == .from ? session.fromRecents?.array : session.toRecents?.array) as? [Station] else {
             return nil
         }
         return recents
@@ -335,6 +354,42 @@ class CoreDataTools: NSObject {
                 print(error?.localizedDescription ?? "")
             }
         })
+    }
+    
+    static func addToRecentStations(station: Station, with direction: PickerButton.Direction) {
+        guard let managedContext = getContext() else {
+            return
+        }
+        guard let session = getLastSession() else {
+            return
+        }
+        let currentRecents = direction == .from ? session.fromRecents : session.toRecents
+        let maximumAllowedRecents = Constant.CoreData.maximumNumberOfRecents
+        if (currentRecents?.count ?? 0) >= maximumAllowedRecents, let currentRecents = currentRecents {
+            let mutableCurrentRecents = NSMutableOrderedSet(orderedSet: currentRecents)
+            if currentRecents.count > maximumAllowedRecents {
+                mutableCurrentRecents.removeAllObjects()
+            } else if currentRecents.count == maximumAllowedRecents {
+                mutableCurrentRecents.removeObject(at: currentRecents.count - 1)
+            }
+            if direction == .from {
+                session.fromRecents = mutableCurrentRecents
+            } else if direction == .to {
+                session.toRecents = mutableCurrentRecents
+            }
+        }
+        if !(currentRecents?.contains(station) ?? true) {
+            if direction == .from {
+                session.insertIntoFromRecents(station, at: 0)
+            } else if direction == .to {
+                session.insertIntoToRecents(station, at: 0)
+            }
+        }
+        do {
+            try managedContext.save()
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
     /**

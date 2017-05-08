@@ -32,6 +32,7 @@ class InputStationViewController: UIViewController, UITextFieldDelegate, CLLocat
         
         // Create tapRecognizer
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped(_:)))
+        tapRecognizer.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tapRecognizer)
         
         // Create closeButton
@@ -138,6 +139,7 @@ class InputStationViewController: UIViewController, UITextFieldDelegate, CLLocat
         
         // Create resultStationsTableViewController
         resultStationsTableViewController = ResultStationsTableViewController()
+        resultStationsTableViewController?.direction = direction
         guard let resultStationsTableViewController = resultStationsTableViewController else {
             return
         }
@@ -354,6 +356,7 @@ class InputStationViewController: UIViewController, UITextFieldDelegate, CLLocat
             let nearbyStations = calculateNearestStations(locations.last?.coordinate)
             let vc = NearbyStationsViewController()
             vc.nearbyStations = nearbyStations
+            vc.direction = direction
             self.present(vc, animated: true, completion: nil)
         }
         locationUpdateCount += 1

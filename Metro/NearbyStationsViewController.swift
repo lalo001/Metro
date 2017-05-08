@@ -11,6 +11,7 @@ import UIKit
 class NearbyStationsViewController: UIViewController {
     
     var nearbyStations: [(Station, CGFloat)]?
+    var direction: PickerButton.Direction?
 
     override func loadView() {
         super.loadView()
@@ -50,6 +51,7 @@ class NearbyStationsViewController: UIViewController {
             
             nearbyResultStationsTableViewController.didMove(toParentViewController: self)
             nearbyResultStationsTableViewController.filteredStations = nearbyStations ?? []
+            nearbyResultStationsTableViewController.direction = direction
             DispatchQueue.main.async {
                 nearbyResultStationsTableViewController.tableView.reloadData()
             }
@@ -68,11 +70,17 @@ class NearbyStationsViewController: UIViewController {
     }
     
     func closeButtonPressed(_ sender: UIButton) {
-        guard let parentVC = self.presentingViewController as? InputStationViewController else {
-            return
+        closeInput()
+    }
+    
+    func closeInput() {
+        DispatchQueue.main.async {
+            guard let parentVC = self.presentingViewController as? InputStationViewController else {
+                return
+            }
+            parentVC.shouldShowKeyboardAutomatically = false
+            parentVC.presentingViewController?.dismiss(animated: true, completion: nil)
         }
-        parentVC.shouldShowKeyboardAutomatically = false
-        parentVC.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     override var shouldAutorotate: Bool {
