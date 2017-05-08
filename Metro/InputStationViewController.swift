@@ -35,8 +35,8 @@ class InputStationViewController: UIViewController, UITextFieldDelegate, CLLocat
         tapRecognizer.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tapRecognizer)
         
-        // Create closeButton
-        let closeButton = Graphics.createCancelButton(in: self.view, tintColor: Tools.colorPicker(3, alpha: 1), target: self, action: #selector(self.closeButtonPressed(_:)))
+        // Create cancelButton
+        let cancelButton = Graphics.createCancelButton(in: self.view, tintColor: Tools.colorPicker(3, alpha: 1), target: self, action: #selector(self.closeButtonPressed(_:)))
         
         // Create titleLabel
         let titleLabel = UIObjects.createLabel(text: NSLocalizedString(self.title ?? "", comment: "").uppercased(), textAlignment: .center, textColor: Tools.colorPicker(1, alpha: 1), font: .systemFont(ofSize: 17, weight: UIFontWeightSemibold))
@@ -44,7 +44,7 @@ class InputStationViewController: UIViewController, UITextFieldDelegate, CLLocat
         
         // Add titleLabel Constraints
         let titleLabelCenterX = NSLayoutConstraint(item: self.view, attribute: .centerX, relatedBy: .equal, toItem: titleLabel, attribute: .centerX, multiplier: 1, constant: 0)
-        let titleLabelCenterY = NSLayoutConstraint(item: closeButton, attribute: .centerY, relatedBy: .equal, toItem: titleLabel, attribute: .centerY, multiplier: 1, constant: 0)
+        let titleLabelCenterY = NSLayoutConstraint(item: cancelButton, attribute: .centerY, relatedBy: .equal, toItem: titleLabel, attribute: .centerY, multiplier: 1, constant: 0)
         self.view.addConstraint(titleLabelCenterX)
         self.view.addConstraint(titleLabelCenterY)
         
@@ -56,7 +56,7 @@ class InputStationViewController: UIViewController, UITextFieldDelegate, CLLocat
         
         // Add scrollView Constraints
         let scrollViewHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[scrollView]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["scrollView" : scrollView])
-        let scrollViewVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[closeButton]-separation-[scrollView]|", options: NSLayoutFormatOptions(), metrics: ["separation" : Constant.Buttons.cancelButtonTopConstant/2], views: ["closeButton" : closeButton, "scrollView" : scrollView])
+        let scrollViewVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[cancelButton]-separation-[scrollView]|", options: NSLayoutFormatOptions(), metrics: ["separation" : Constant.Buttons.cancelButtonTopConstant/2], views: ["cancelButton" : cancelButton, "scrollView" : scrollView])
         self.view.addConstraints(scrollViewHorizontalConstraints)
         self.view.addConstraints(scrollViewVerticalConstraints)
         

@@ -136,6 +136,30 @@ class Graphics {
         return container
     }
     
+    // MARK: - Back Button
+    
+    static func createBackButton(in view: UIView, tintColor: UIColor, target: Any, action: Selector) -> UIButton {
+        
+        // Create backButton
+        let backButton = UIButton(type: .system)
+        backButton.tintColor = tintColor
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        backButton.setImage(Tools.imageWithColor(UIImage(named: "Back Button")!, color: tintColor), for: .normal)
+        backButton.addTarget(target, action: action, for: .touchUpInside)
+        backButton.imageView?.contentMode = .scaleAspectFit
+        backButton.imageEdgeInsets = UIEdgeInsets(top: 7, left: 0, bottom: 7, right: 7)
+        backButton.contentHorizontalAlignment = .left
+        backButton.contentVerticalAlignment = .center
+        view.addSubview(backButton)
+        
+        // Add backButton Constraints
+        let backButtonHorizontalConstraint = NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[backButton(30)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["backButton" : backButton])
+        let backButtonVerticalConstraint = NSLayoutConstraint.constraints(withVisualFormat: "V:|-top-[backButton(30)]", options: NSLayoutFormatOptions(), metrics: ["top" : Constant.Buttons.backButtonTopConstant], views: ["backButton" : backButton])
+        view.addConstraints(backButtonHorizontalConstraint)
+        view.addConstraints(backButtonVerticalConstraint)
+        return backButton
+    }
+    
     // MARK: - Cancel Button
     
     static func createCancelButton(in view: UIView, tintColor: UIColor, target: Any, action: Selector) -> UIButton {
@@ -153,10 +177,10 @@ class Graphics {
         view.addSubview(cancelButton)
         
         // Add cancelButton Constraints
-        let cancelHorizontalConstraint = NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[cancelButton(30)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["cancelButton" : cancelButton])
-        let cancelVerticalConstraint = NSLayoutConstraint.constraints(withVisualFormat: "V:|-top-[cancelButton(30)]", options: NSLayoutFormatOptions(), metrics: ["top" : Constant.Buttons.cancelButtonTopConstant], views: ["cancelButton" : cancelButton])
-        view.addConstraints(cancelHorizontalConstraint)
-        view.addConstraints(cancelVerticalConstraint)
+        let cancelButtonHorizontalConstraint = NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[cancelButton(30)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["cancelButton" : cancelButton])
+        let cancelButtonVerticalConstraint = NSLayoutConstraint.constraints(withVisualFormat: "V:|-top-[cancelButton(30)]", options: NSLayoutFormatOptions(), metrics: ["top" : Constant.Buttons.cancelButtonTopConstant], views: ["cancelButton" : cancelButton])
+        view.addConstraints(cancelButtonHorizontalConstraint)
+        view.addConstraints(cancelButtonVerticalConstraint)
         return cancelButton
     }
     

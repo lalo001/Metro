@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SearchRouteViewController: UIViewController {
+class SearchRouteViewController: UIViewController, UIGestureRecognizerDelegate {
     
     var fromButtonContainer: UIView!
     var toButtonContainer: UIView!
@@ -25,9 +25,23 @@ class SearchRouteViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        self.title = NSLocalizedString("metro", comment: "")
-        self.navigationItem.title = self.title?.uppercased()
+        self.navigationController?.isNavigationBarHidden = true
         self.view.backgroundColor = Tools.colorPicker(2, alpha: 1)
+        
+        if self.navigationController?.responds(to: #selector(getter: UINavigationController.interactivePopGestureRecognizer)) ?? false {
+            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+            self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        }
+        
+        // Create titleLabel
+        let titleLabel = UIObjects.createLabel(text: NSLocalizedString(NSLocalizedString("metro", comment: "").uppercased(), comment: "").uppercased(), textAlignment: .center, textColor: Tools.colorPicker(1, alpha: 1), font: .systemFont(ofSize: 17, weight: UIFontWeightSemibold))
+        self.view.addSubview(titleLabel)
+        
+        // Add titleLabel Constraints
+        let titleLabelCenterX = NSLayoutConstraint(item: self.view, attribute: .centerX, relatedBy: .equal, toItem: titleLabel, attribute: .centerX, multiplier: 1, constant: 0)
+        let titleLabelVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-topConstant-[titleLabel]", options: NSLayoutFormatOptions(), metrics: ["topConstant" : Constant.Labels.titleTopConstantSeparation], views: ["titleLabel" : titleLabel])
+        self.view.addConstraint(titleLabelCenterX)
+        self.view.addConstraints(titleLabelVerticalConstraints)
         
         // Create container
         container = UIView()
@@ -36,7 +50,7 @@ class SearchRouteViewController: UIViewController {
         
         // Add container Constraints
         let containerHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-leftMargin-[container]-rightMargin-|", options: NSLayoutFormatOptions(), metrics: ["leftMargin" : Constant.StationPicker.leftMarginSeparation, "rightMargin" : Constant.StationPicker.rightMarginSeparation], views: ["container" : container])
-        let containerVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-topMargin-[container]", options: NSLayoutFormatOptions(), metrics: ["topMargin" : Constant.StationPicker.topMarginSeparation], views: ["container" : container])
+        let containerVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[titleLabel]-topMargin-[container]", options: NSLayoutFormatOptions(), metrics: ["topMargin" : Constant.StationPicker.topMarginSeparation], views: ["titleLabel" : titleLabel, "container" : container])
         self.view.addConstraints(containerHorizontalConstraints)
         self.view.addConstraints(containerVerticalConstraints)
         
@@ -120,6 +134,10 @@ class SearchRouteViewController: UIViewController {
         return false
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     // MARK: - Custom Functions
     
     func updatePickers(newFromStation: Station?, newToStation: Station?) {
@@ -181,8 +199,27 @@ class SearchRouteViewController: UIViewController {
     
     func searchRouteButtonTouched(_ sender: UIButton) {
         print("Search Route.")
+        guard let firstStationName = currentFromStation?.name?.capitalized, let secondStationName = currentToStation?.name?.capitalized else {
+            // Show error alert
+            return
+        }
+        guard let route = Dijkstra.prepareDijkstra(firstStation: firstStationName, secondStation: secondStationName) else {
+            let alert = UIAlertController(title: NSLocalizedString("noRouteFound", comment: ""), message: NSLocalizedString("noRouteFoundDescription", comment: ""), preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("ok", comment: ""), style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        let vc = RouteViewController()
+        vc.route = route
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
+    // MARK: - UIGestureRecognizerDelegate Functions
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
     /*
     // MARK: - Navigation
 

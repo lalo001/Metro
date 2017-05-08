@@ -15,6 +15,7 @@ struct Constant {
     }
     
     struct Buttons {
+        static let backButtonTopConstant: CGFloat = 40
         static let cancelButtonTopConstant: CGFloat = 40
         static let mainButtonTitleColor: UIColor = Tools.colorPicker(1, alpha: 1)
         static let mainButtonCornerRadius: CGFloat = Constant.Buttons.mainButtonHeight/2
@@ -50,6 +51,7 @@ struct Constant {
         static let navigationBarTitleColor: UIColor = Tools.colorPicker(1, alpha: 1)
         static let subtitleLabelColor: UIColor = Tools.colorPicker(1, alpha: 0.5)
         static let titleLabelColor: UIColor = Tools.colorPicker(1, alpha: 1)
+        static let titleTopConstantSeparation: CGFloat = 49
     }
     
     struct RouteIcon {

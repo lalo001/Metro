@@ -249,7 +249,16 @@ class UIObjects: NSObject {
             circle.addSubview(numberLabel)
             
             // Add numberLabel Constraints
-            let numberLabelCenterX = NSLayoutConstraint(item: circle, attribute: .centerX, relatedBy: .equal, toItem: numberLabel, attribute: .centerX, multiplier: 1, constant: name == "1" ?  0.25 : 0)
+            let centerXConstant: CGFloat
+            switch name {
+            case "1":
+                centerXConstant = 0.25
+            case "12":
+                centerXConstant = 0.3
+            default:
+                centerXConstant = 0
+            }
+            let numberLabelCenterX = NSLayoutConstraint(item: circle, attribute: .centerX, relatedBy: .equal, toItem: numberLabel, attribute: .centerX, multiplier: 1, constant: centerXConstant)
             let numberLabelCenterY = NSLayoutConstraint(item: circle, attribute: .centerY, relatedBy: .equal, toItem: numberLabel, attribute: .centerY, multiplier: 1, constant: 0)
             circle.addConstraint(numberLabelCenterX)
             circle.addConstraint(numberLabelCenterY)
@@ -323,6 +332,54 @@ class UIObjects: NSObject {
             }
         }
         
+        return container
+    }
+    
+    static func createCircle(with diameter: CGFloat, in view: UIView, color: UIColor) -> UIView? {
+        
+        let cornerRadius = diameter/2
+        // Create circle
+        let circle = Circle(cornerRadius: cornerRadius)
+        circle.translatesAutoresizingMaskIntoConstraints = false
+        circle.clipsToBounds = true
+        circle.backgroundColor = color
+        view.addSubview(circle)
+        
+        // Add circle Constraints
+        let circleWidth = NSLayoutConstraint(item: circle, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: diameter)
+        let circleHeight = NSLayoutConstraint(item: circle, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: diameter)
+        view.addConstraint(circleWidth)
+        view.addConstraint(circleHeight)
+        
+        return circle
+    }
+    
+    // MARK: - Route Creation
+    
+    static func createRoute(for stationNames: [String], in view: UIView) -> UIView {
+        
+        var stations: [Station] = []
+        print(stationNames)
+        for i in 0 ..< stationNames.count {
+            if let currentStation = CoreDataTools.fetchStation(with: stationNames[i]) {
+                stations.append(currentStation)
+            }
+        }
+        print(stations.count)
+        
+        // Create container
+        let container = UIView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(container)
+        
+        // Add container Constraints
+        let containerHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[container]-20-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["container" : container])
+        let containerVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[container]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["container" : container])
+        view.addConstraints(containerHorizontalConstraints)
+        view.addConstraints(containerVerticalConstraints)
+        
+        // Create stationNameLabel
+        //let stationNameLabel = createLabel(text: <#T##String#>, textAlignment: <#T##NSTextAlignment#>, textColor: <#T##UIColor#>, font: <#T##UIFont#>)
         return container
     }
     
