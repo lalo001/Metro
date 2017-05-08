@@ -19,7 +19,6 @@
 		2008F7031E8C0F4700170643 /* ScanAcceptedBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2008F6FF1E8C0F4700170643 /* ScanAcceptedBorder.swift */; };
 		200CA5FA1EBE271000FF8FDA /* StationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200CA5F91EBE271000FF8FDA /* StationTableViewCell.swift */; };
 		200CA5FC1EBE3EB400FF8FDA /* ResultStationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200CA5FB1EBE3EB400FF8FDA /* ResultStationsTableViewController.swift */; };
-		200CA5FE1EBFA02900FF8FDA /* NoResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200CA5FD1EBFA02900FF8FDA /* NoResultsView.swift */; };
 		200CA6001EBFB50300FF8FDA /* NearbyStationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200CA5FF1EBFB50300FF8FDA /* NearbyStationsViewController.swift */; };
 		200CA6021EBFEB3900FF8FDA /* NearbyResultStationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200CA6011EBFEB3900FF8FDA /* NearbyResultStationsTableViewController.swift */; };
 		200CA6071EBFF75300FF8FDA /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200CA6061EBFF75300FF8FDA /* Store.swift */; };
@@ -27,6 +26,7 @@
 		200CA6101EC020E400FF8FDA /* RouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200CA60F1EC020E400FF8FDA /* RouteViewController.swift */; };
 		200CA6141EC038F400FF8FDA /* RouteListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200CA6131EC038F400FF8FDA /* RouteListTableViewController.swift */; };
 		200CA6161EC0394700FF8FDA /* RouteListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200CA6151EC0394700FF8FDA /* RouteListTableViewCell.swift */; };
+		200CA6191EC0B38E00FF8FDA /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200CA6181EC0B38E00FF8FDA /* EventDetailViewController.swift */; };
 		2014BFA31E5BF80D00C47D18 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2014BFA21E5BF80D00C47D18 /* Line.swift */; };
 		202D53AE1E8A1E6C0016A946 /* MetroBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D53AD1E8A1E6C0016A946 /* MetroBackend.swift */; };
 		202D53B01E8A28A80016A946 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D53AF1E8A28A80016A946 /* Circle.swift */; };
@@ -124,7 +124,6 @@
 		2008F6FF1E8C0F4700170643 /* ScanAcceptedBorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanAcceptedBorder.swift; sourceTree = "<group>"; };
 		200CA5F91EBE271000FF8FDA /* StationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationTableViewCell.swift; sourceTree = "<group>"; };
 		200CA5FB1EBE3EB400FF8FDA /* ResultStationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultStationsTableViewController.swift; sourceTree = "<group>"; };
-		200CA5FD1EBFA02900FF8FDA /* NoResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoResultsView.swift; sourceTree = "<group>"; };
 		200CA5FF1EBFB50300FF8FDA /* NearbyStationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearbyStationsViewController.swift; sourceTree = "<group>"; };
 		200CA6011EBFEB3900FF8FDA /* NearbyResultStationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearbyResultStationsTableViewController.swift; sourceTree = "<group>"; };
 		200CA6061EBFF75300FF8FDA /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
@@ -132,6 +131,7 @@
 		200CA60F1EC020E400FF8FDA /* RouteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteViewController.swift; sourceTree = "<group>"; };
 		200CA6131EC038F400FF8FDA /* RouteListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteListTableViewController.swift; sourceTree = "<group>"; };
 		200CA6151EC0394700FF8FDA /* RouteListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteListTableViewCell.swift; sourceTree = "<group>"; };
+		200CA6181EC0B38E00FF8FDA /* EventDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
 		2014BFA21E5BF80D00C47D18 /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		202D53AD1E8A1E6C0016A946 /* MetroBackend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetroBackend.swift; sourceTree = "<group>"; };
 		202D53AF1E8A28A80016A946 /* Circle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
@@ -319,7 +319,6 @@
 				208339491E8CB95A0002EFF2 /* Map */,
 				2008F7041E8C0F4C00170643 /* Scanner */,
 				200CA6041EBFF15B00FF8FDA /* Search */,
-				200CA5FD1EBFA02900FF8FDA /* NoResultsView.swift */,
 				2034943F1E5A2939001B9F7C /* Main.storyboard */,
 				2007B0CA1E84BC7800655282 /* .swiftlint.yml */,
 				203494451E5A2939001B9F7C /* Assets.xcassets */,
@@ -381,6 +380,7 @@
 			isa = PBXGroup;
 			children = (
 				2008F6F21E8B24D700170643 /* EventsViewController.swift */,
+				200CA6181EC0B38E00FF8FDA /* EventDetailViewController.swift */,
 				2008F6F61E8B401A00170643 /* EventSearchResultsTableViewController.swift */,
 				208339411E8C6A0C0002EFF2 /* EventCellTableViewCell.swift */,
 			);
@@ -568,7 +568,6 @@
 				20610E831E5B7DCE00BA6700 /* Station.swift in Sources */,
 				2008F7011E8C0F4700170643 /* ScanOverlay.swift in Sources */,
 				20076D761EBD4B6B0082A7C4 /* InputStationViewController.swift in Sources */,
-				200CA5FE1EBFA02900FF8FDA /* NoResultsView.swift in Sources */,
 				200CA60D1EC00F1200FF8FDA /* Dijkstra.swift in Sources */,
 				208339471E8CB9560002EFF2 /* CustomMapView.swift in Sources */,
 				2007B0CE1E84C6DD00655282 /* UIObjects.swift in Sources */,
@@ -578,6 +577,7 @@
 				200CA5FA1EBE271000FF8FDA /* StationTableViewCell.swift in Sources */,
 				200CA6071EBFF75300FF8FDA /* Store.swift in Sources */,
 				202D53AE1E8A1E6C0016A946 /* MetroBackend.swift in Sources */,
+				200CA6191EC0B38E00FF8FDA /* EventDetailViewController.swift in Sources */,
 				203494511E5A2F74001B9F7C /* Tools.swift in Sources */,
 				200CA6021EBFEB3900FF8FDA /* NearbyResultStationsTableViewController.swift in Sources */,
 			);

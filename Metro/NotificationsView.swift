@@ -24,12 +24,18 @@ class NotificationsView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .red
-        let button = UIButton(type: .system)
-        button.frame = CGRect(x: 30, y: 30, width: 50, height: 21)
-        button.setTitle("Hola", for: .normal)
-        button.addTarget(ViewController(), action: #selector(ViewController.presentTabBar(_:)), for: .touchUpInside)
-        self.addSubview(button)
+        self.backgroundColor = Tools.colorPicker(2, alpha: 1)
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.backgroundColor = .clear
+        self.addSubview(containerView)
+        
+        let containerViewHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[containerView]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["containerView" : containerView])
+        let containerViewVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[containerView]-30-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["containerView" : containerView])
+        self.addConstraints(containerViewHorizontalConstraints)
+        self.addConstraints(containerViewVerticalConstraints)
+        
+        let roundedButton = UIObjects.createRoundedButton(with: "Enter Metro", in: containerView, target: ViewController(), action: #selector(ViewController.presentTabBar(_:)))
     }
     
 }

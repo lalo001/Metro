@@ -24,6 +24,6 @@ class LocationView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .green
+        backgroundColor = Tools.colorPicker(2, alpha: 1)
     }
 }

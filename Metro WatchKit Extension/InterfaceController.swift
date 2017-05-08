@@ -65,6 +65,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     @IBAction func reloadTable() {
         createTable()
         getEventsFromiPhone(session: session)
+        createTable()
     }
     
     // MARK: - WCSessionDelegate Functions
@@ -74,11 +75,14 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         if let error = error {
             print(error.localizedDescription)
         } else {
+            print("Getting events.")
             getEventsFromiPhone(session: session)
+            createTable()
         }
     }
     
     func getEventsFromiPhone(session: WCSession?) {
+        print("Get")
         session?.sendMessage([ : ], replyHandler: {[weak self]
             (response) -> Void in
             if let events = response["eventsData"] as? [[String : Any]] {

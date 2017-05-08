@@ -12,6 +12,7 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var searchController: UISearchController?
     var eventSearchResultsController: EventSearchResultsTableViewController?
+    var tableView: UITableView!
     
     override func loadView() {
         super.loadView()
@@ -21,7 +22,7 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.view.backgroundColor = Tools.colorPicker(2, alpha: 1)
         
         // Create tableView
-        let tableView = UITableView()
+        tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = Tools.colorPicker(2, alpha: 1)
         
@@ -29,9 +30,13 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let backgroundView = UIView()
         backgroundView.backgroundColor = Tools.colorPicker(2, alpha: 1)
         tableView.backgroundView = backgroundView
-        
+        tableView.rowHeight = UITableViewAutomaticDimension
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.indicatorStyle = .white
+        tableView.showsVerticalScrollIndicator = true
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        tableView.register(EventCellTableViewCell.self, forCellReuseIdentifier: "reuseIdentifier")
         self.view.addSubview(tableView)
         
         // Add tableView Constraints
@@ -48,10 +53,9 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         searchController?.searchResultsUpdater = eventSearchResultsController
         searchController?.dimsBackgroundDuringPresentation = false
         searchController?.hidesNavigationBarDuringPresentation = false
-        searchController?.searchBar.searchBarStyle = .minimal
         searchController?.searchBar.barStyle = .black
+        searchController?.searchBar.barTintColor = Tools.colorPicker(19, alpha: 1)
         searchController?.searchBar.delegate = self
-        searchController?.searchBar.backgroundColor = Tools.colorPicker(19, alpha: 1)
         searchController?.searchBar.tintColor = Tools.colorPicker(3, alpha: 1)
         searchController?.searchBar.scopeBarBackgroundImage = Tools.imageFromColor(Tools.colorPicker(19, alpha: 1))
         self.definesPresentationContext = true
@@ -70,16 +74,27 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
         // Do any additional setup after loading the view.
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
     // MARK: - UITableViewDelegate Functions
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Selected Cell")
+        tableView.deselectRow(at: indexPath, animated: true)
+        let vc = EventDetailViewController()
+        vc.event = CoreDataTools.storedEvents?[indexPath.row]
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     // MARK: - UITableViewDataSource Functions
@@ -93,17 +108,37 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "reuseIdentifier")
-        cell.textLabel?.text = CoreDataTools.storedEvents?[indexPath.row].name
-        cell.backgroundColor = .clear
-        cell.textLabel?.textColor = .white
+        let cell  = EventCellTableViewCell(event: CoreDataTools.storedEvents?[indexPath.row])
         return cell
     }
 
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
     // MARK: - UISearchBarDelegate Functions
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.scopeButtonTitles = [NSLocalizedString("category", comment: ""), NSLocalizedString("date", comment: ""), NSLocalizedString("line", comment: ""), NSLocalizedString("station", comment: "")]
+        //searchBar.scopeButtonTitles = [NSLocalizedString("category", comment: ""), NSLocalizedString("date", comment: ""), NSLocalizedString("line", comment: ""), NSLocalizedString("station", comment: "")]
+    }
+    
+    // MARK: - Shake Gesture
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            // Update events from API.
+            MetroBackend.getEvents(completion: {(events, error) -> Void in
+                if error != nil && CoreDataTools.storedEvents == nil {
+                    CoreDataTools.storedEvents = []
+                } else if error == nil {
+                    if let events = events {
+                        CoreDataTools.createMetroEvents(events: events)
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
+                        }
+                    }
+                }
+            })
+        }
     }
     
     /*

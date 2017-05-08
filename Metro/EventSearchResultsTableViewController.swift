@@ -20,7 +20,12 @@ class EventSearchResultsTableViewController: UITableViewController, UISearchResu
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
         self.tableView.backgroundColor = Tools.colorPicker(2, alpha: 1)
+        self.tableView.register(EventCellTableViewCell.self, forCellReuseIdentifier: "reuseIdentifier")
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.indicatorStyle = .white
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,15 +59,23 @@ class EventSearchResultsTableViewController: UITableViewController, UISearchResu
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "reuseIdentifier")
-
+        let cell  = EventCellTableViewCell(event: filteredEvents[indexPath.row])
+        
         // Configure the cell...
-        cell.textLabel?.text = filteredEvents[indexPath.row].name
-        cell.backgroundColor = .clear
-        cell.textLabel?.textColor = .white
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.tableView.deselectRow(at: indexPath, animated: true)
+        let vc = EventDetailViewController()
+        vc.event = filteredEvents[indexPath.row]
+        self.presentingViewController?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

@@ -200,13 +200,11 @@ class SearchRouteViewController: UIViewController, UIGestureRecognizerDelegate {
     func searchRouteButtonTouched(_ sender: UIButton) {
         print("Search Route.")
         guard let firstStationName = currentFromStation?.name?.capitalized, let secondStationName = currentToStation?.name?.capitalized else {
-            // Show error alert
+            Tools.showNoRouteFoundAlert(self)
             return
         }
         guard let route = Dijkstra.prepareDijkstra(firstStation: firstStationName, secondStation: secondStationName) else {
-            let alert = UIAlertController(title: NSLocalizedString("noRouteFound", comment: ""), message: NSLocalizedString("noRouteFoundDescription", comment: ""), preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("ok", comment: ""), style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+            Tools.showNoRouteFoundAlert(self)
             return
         }
         let vc = RouteViewController()

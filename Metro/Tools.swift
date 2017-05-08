@@ -159,4 +159,10 @@ class Tools: NSObject {
         vc.present(alert, animated: true, completion: nil)
     }
     
+    static func showNoRouteFoundAlert(_ vc: AnyObject) {
+        let alert = UIAlertController(title: NSLocalizedString("noRouteFound", comment: ""), message: NSLocalizedString("noRouteFoundDescription", comment: ""), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("ok", comment: ""), style: .default, handler: nil))
+        vc.present(alert, animated: true, completion: nil)
+    }
+    
 }

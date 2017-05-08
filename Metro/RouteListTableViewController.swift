@@ -55,7 +55,8 @@ class RouteListTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = RouteListTableViewCell(station: stations?[indexPath.row])
+        let isLast = indexPath.row == (stations?.count ?? 0) - 1 ? true : false
+        let cell = RouteListTableViewCell(station: stations?[indexPath.row], isLast: isLast)
 
         // Configure the cell...
 
