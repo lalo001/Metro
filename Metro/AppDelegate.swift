@@ -79,6 +79,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
     }
+    
+    func application(_ application: UIApplication, shouldAllowExtensionPointIdentifier extensionPointIdentifier: UIApplicationExtensionPointIdentifier) -> Bool {
+        if extensionPointIdentifier == UIApplicationExtensionPointIdentifier.keyboard {
+            return false
+        }
+        return true
+    }
 
     // MARK: - Core Data stack
 

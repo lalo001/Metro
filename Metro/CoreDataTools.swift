@@ -260,6 +260,21 @@ class CoreDataTools: NSObject {
     }
     
     /**
+     Get the last session recent stations.
+     
+     - returns: An array of stations.
+     */
+    static func getLastSessionRecentStations(for direction: PickerButton.Direction) -> [Station]? {
+        guard let session = getLastSession() else {
+            return nil
+        }
+        guard let recents = (direction == .from ? session.fromRecents?.allObjects : session.toRecents?.allObjects) as? [Station] else {
+            return nil
+        }
+        return recents
+    }
+    
+    /**
      Get the current Core Data's persistent store coordinator.
      
      - returns: A [NSPersistentStoreCoordinator](apple-reference-documentation://hsRdlxSPjF) object.

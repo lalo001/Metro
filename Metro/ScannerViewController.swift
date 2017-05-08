@@ -181,7 +181,7 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         cancelButton?.removeFromSuperview()
         
         // Add cancelButton
-        cancelButton = Graphics.createCancelButton(in: self.view, target: self, action: #selector(self.cancelButtonPressed(_:)))
+        cancelButton = Graphics.createCancelButton(in: self.view, tintColor: Tools.colorPicker(1, alpha: 1), target: self, action: #selector(self.cancelButtonPressed(_:)))
         
         // Create statusLabel
         statusLabel?.removeFromSuperview()

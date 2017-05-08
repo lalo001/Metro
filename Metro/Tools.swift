@@ -139,4 +139,24 @@ class Tools: NSObject {
         return frame
     }
     
+    // MARK: - Location Error Functions
+    
+    static func showLocationServicesOffAlert(_ vc: AnyObject) {
+        let alert = UIAlertController(title: NSLocalizedString("locationServicesOff", comment: "").capitalized(with: Locale(identifier: NSLocalizedString("locale", comment: ""))), message: NSLocalizedString("locationServicesOffDescription", comment: ""), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("settings", comment: ""), style: .default, handler: { (action: UIAlertAction) -> Void in
+            guard let url = URL(string: "App-Prefs:root=Privacy&path=LOCATION") else {
+                return
+            }
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("ok", comment: ""), style: .default, handler: nil))
+        vc.present(alert, animated: true, completion: nil)
+    }
+    
+    static func showLocationNotAvailableAlert(_ vc: AnyObject) {
+        let alert = UIAlertController(title: NSLocalizedString("currentLocationNotAvailable", comment: "").capitalized(with: Locale(identifier: NSLocalizedString("locale", comment: ""))), message: NSLocalizedString("currentLocationNotAvailableDescription", comment: ""), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("ok", comment: ""), style: .default, handler: nil))
+        vc.present(alert, animated: true, completion: nil)
+    }
+    
 }

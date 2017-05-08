@@ -52,22 +52,24 @@ class SearchRouteViewController: UIViewController {
         container.addConstraints(originLabelHorizontalConstraints)
         container.addConstraints(originLabelVerticalConstraints)
         
-        // Create fromStation
-        var lastSessionStations = CoreDataTools.getLastSessionFromToStations()
+        // Check if there are stations from last session. If not, create new ones.
+        /*var lastSessionStations = CoreDataTools.getLastSessionFromToStations()
         if lastSessionStations.0 == nil || lastSessionStations.1 == nil {
             if let fromStation = CoreDataTools.storedStations?.first, let toStation = CoreDataTools.storedStations?[1] {
                 CoreDataTools.updateSession(lastUpdateDate: nil, fromStation: fromStation, toStation: toStation)
             }
-        }
-        lastSessionStations = CoreDataTools.getLastSessionFromToStations()
-        guard let fromStation = lastSessionStations.0, let toStation = lastSessionStations.1 else {
+        }*/
+        let lastSessionStations = CoreDataTools.getLastSessionFromToStations()
+        let fromStation = lastSessionStations.0
+        let toStation = lastSessionStations.1
+        /*guard let fromStation = lastSessionStations.0, let toStation = lastSessionStations.1 else {
             return
-        }
+        }*/
         currentFromStation = fromStation
         currentToStation = toStation
         
-        // Create fromButtonContainerr
-        fromButtonContainer = UIObjects.createPickerButton(for: fromStation, inside: container, with: 5, to: originLabel, target: self, action: #selector(self.stationButtonTouched(_:)))
+        // Create fromButtonContainer
+        fromButtonContainer = UIObjects.createPickerButton(for: fromStation, inside: container, with: 5, to: originLabel, target: self, action: #selector(self.stationButtonTouched(_:)), direction: .from)
         
         // Create destinationLabel
         destinationLabel = UIObjects.createLabel(text: NSLocalizedString("destination", comment: "").uppercased(), textAlignment: .left, textColor: Constant.StationPicker.pickerTitleColor, font: Constant.StationPicker.pickerTitleFont)
@@ -78,7 +80,7 @@ class SearchRouteViewController: UIViewController {
         container.addConstraints(destinationLabelVerticalConstraints)
         
         // Create toButtonContainer
-        toButtonContainer = UIObjects.createPickerButton(for: toStation, inside: container, with: 5, to: destinationLabel, target: self, action: #selector(self.stationButtonTouched(_:)))
+        toButtonContainer = UIObjects.createPickerButton(for: toStation, inside: container, with: 5, to: destinationLabel, target: self, action: #selector(self.stationButtonTouched(_:)), direction: .to)
         
         // Add bottomContainerConstraints
         let bottomContainerConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[toButtonContainer]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["toButtonContainer" : toButtonContainer])
@@ -119,10 +121,10 @@ class SearchRouteViewController: UIViewController {
             self.invertIconButton.removeFromSuperview()
             
             // Create fromButtonContainerr
-            self.fromButtonContainer = UIObjects.createPickerButton(for: newFromStation, inside: self.container, with: 5, to: self.originLabel, target: self, action: #selector(self.stationButtonTouched(_:)))
+            self.fromButtonContainer = UIObjects.createPickerButton(for: newFromStation, inside: self.container, with: 5, to: self.originLabel, target: self, action: #selector(self.stationButtonTouched(_:)), direction: .from)
             
             // Create toButtonContainer
-            self.toButtonContainer = UIObjects.createPickerButton(for: newToStation, inside: self.container, with: 5, to: self.destinationLabel, target: self, action: #selector(self.stationButtonTouched(_:)))
+            self.toButtonContainer = UIObjects.createPickerButton(for: newToStation, inside: self.container, with: 5, to: self.destinationLabel, target: self, action: #selector(self.stationButtonTouched(_:)), direction: .to)
             
             // Add destinationLabel Constraints
             let destinationLabelVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[fromButtonContainer]-30-[destinationLabel]", options: .alignAllLeft, metrics: nil, views: ["fromButtonContainer" : self.fromButtonContainer, "destinationLabel" : self.destinationLabel])
@@ -144,6 +146,23 @@ class SearchRouteViewController: UIViewController {
     
     func stationButtonTouched(_ sender: PickerButton) {
         print("Station touched.")
+        guard let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "inputStation") as? InputStationViewController else {
+            return
+        }
+        var fallbackPlaceholder: String = ""
+        var currentStation: Station?
+        if sender.direction == .from {
+            vc.title = "leavingFrom"
+            fallbackPlaceholder = NSLocalizedString("origin", comment: "")
+            currentStation = currentFromStation
+        } else if sender.direction == .to {
+            vc.title = "destination"
+            fallbackPlaceholder = NSLocalizedString("destination", comment: "")
+            currentStation = currentToStation
+        }
+        vc.placeholderText = currentStation != nil ? sender.titleLabel?.text : fallbackPlaceholder
+        vc.direction = sender.direction
+        self.present(vc, animated: true, completion: nil)
     }
     
     func invertStationsButtonTouched(_ sender: UIButton) {

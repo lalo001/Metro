@@ -5,8 +5,13 @@
   Created by Eduardo Valencia on 2/19/17.
   Copyright © 2017 Eduardo Valencia. All rights reserved.
 */
+"anErrorOcurred" = "An error ocurred";
 "arriving at" = "Arriving at";
 "category" = "Category";
+"chooseDestination" = "Choose Destination";
+"chooseOrigin" = "Choose Origin";
+"currentLocationNotAvailable" = "Current Location Not Available";
+"currentLocationNotAvailableDescription" = "Your current location can not be determined at this time.";
 "dataIsNil" = "Data is nil";
 "date" = "Date";
 "destination" = "Destination";
@@ -16,8 +21,18 @@
 "leavingFrom" = "Leaving from";
 "lightRail" = "Light Rail";
 "line" = "Line";
+"locale" = "en-US";
+"locationServicesOff" = "Location Services Off";
+"locationServicesOffDescription" = "Turn on Location Services in Settings > Privacy to allow Metro to determine your current location.";
 "metro" = "Metro";
+"nearbyStations" = "Nearby Stations";
+"noRecentStations" = "No recent stations.";
+"noStationsFound" = "No stations found.";
+"ok" = "OK";
+"recents" = "Recents";
+"results" = "Results";
 "searchRoute" = "Search Route";
+"settings" = "Settings";
 "slogan" = "The app to get from point A to B faster.";
 "station" = "Station";
 "stations" = "Stations";
@@ -25,5 +40,6 @@
 "subway" = "Subway";
 "unknown" = "Unknown";
 "urlIsNil" = "URL is nil.";
+"useNearestStation" = "Use Nearest Station";
 "welcomeTo" = "Welcome to";
 

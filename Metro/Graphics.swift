@@ -138,14 +138,13 @@ class Graphics {
     
     // MARK: - Cancel Button
     
-    static func createCancelButton(in view: UIView, target: Any, action: Selector) -> UIButton {
+    static func createCancelButton(in view: UIView, tintColor: UIColor, target: Any, action: Selector) -> UIButton {
         
         // Create cancelButton
         let cancelButton = UIButton(type: .system)
-        let whiteColor = Tools.colorPicker(1, alpha: 1)
-        cancelButton.tintColor = whiteColor
+        cancelButton.tintColor = tintColor
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        cancelButton.setImage(Tools.imageWithColor(UIImage(named: "Cancel Button")!, color: whiteColor), for: .normal)
+        cancelButton.setImage(Tools.imageWithColor(UIImage(named: "Cancel Button")!, color: tintColor), for: .normal)
         cancelButton.addTarget(target, action: action, for: .touchUpInside)
         cancelButton.imageView?.contentMode = .scaleAspectFit
         cancelButton.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)

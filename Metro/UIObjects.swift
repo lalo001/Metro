@@ -85,7 +85,7 @@ class UIObjects: NSObject {
         - topObject: Any object with which the button will have a top constraint.
      - note: If topObject is `nil`\, the top constraint is made with the superview.
      */
-    static func createPickerButton(for station: Station, inside view: UIView, with topConstant: CGFloat, to topObject: Any?, target: Any?, action: Selector?) -> UIView {
+    static func createPickerButton(for station: Station?, inside view: UIView, with topConstant: CGFloat, to topObject: Any?, target: Any?, action: Selector?, direction: PickerButton.Direction) -> UIView {
 
         // Create container
         let container = UIView()
@@ -106,11 +106,13 @@ class UIObjects: NSObject {
         // Create button
         let button = PickerButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.direction = direction
         button.tintColor = Tools.colorPicker(1, alpha: 1)
         button.titleLabel?.numberOfLines = 0
         button.titleLabel?.lineBreakMode = .byWordWrapping
         button.titleLabel?.font = Constant.StationPicker.pickerTextFont
-        button.setTitleColor(Tools.colorPicker(1, alpha: 1), for: .normal)
+        let titleColor = station?.name != nil ? Tools.colorPicker(1, alpha: 1) : Tools.colorPicker(1, alpha: 0.8)
+        button.setTitleColor(titleColor, for: .normal)
         button.setImage(UIImage(named: "Chevron"), for: .normal)
         button.imageView?.alpha = Constant.StationPicker.nonTextAlpha
         button.contentHorizontalAlignment = .left
@@ -118,7 +120,8 @@ class UIObjects: NSObject {
         let imageWidth = button.currentImage?.size.width ?? 0
         let leftImageInset = view.frame.width - imageWidth
         button.titleLabel?.preferredMaxLayoutWidth = leftImageInset
-        button.setTitle((station.name ?? "").uppercased(), for: .normal)
+        let fallbackText = direction == .from ? NSLocalizedString("chooseOrigin", comment: "") : NSLocalizedString("chooseDestination", comment: "")
+        button.setTitle((station?.name ?? fallbackText).uppercased(), for: .normal)
         button.transform = CGAffineTransform(scaleX: -1, y: 1)
         button.titleLabel?.transform = CGAffineTransform(scaleX: -1, y: 1)
         button.imageView?.transform = CGAffineTransform(scaleX: -1, y: 1)
@@ -149,7 +152,7 @@ class UIObjects: NSObject {
         // Add line Constraints
         let lineWidth = button.frame.width + Constant.StationPicker.lineWidthOffset
         let lineHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[line(lineWidth)]", options: NSLayoutFormatOptions(), metrics: ["lineWidth" : lineWidth], views: ["line" : line])
-        guard let lines = station.lines?.array as? [Line] else {
+        guard let lines = station?.lines?.array as? [Line] else {
             let lineVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[button]-separation-[line(2)]|", options: .alignAllLeft, metrics: ["separation" : Constant.StationPicker.lineSeparation], views: ["button" : button, "line" : line])
             container.addConstraints(lineHorizontalConstraints)
             container.addConstraints(lineVerticalConstraints)
@@ -160,7 +163,7 @@ class UIObjects: NSObject {
         container.addConstraints(lineVerticalConstraints)
     
         // Create circlesContainer
-        let circlesContainer = UIObjects.createCircles(for: lines, in: container, with: Constant.StationPicker.bottomLineSeparation, to: line)
+        let circlesContainer = UIObjects.createCircles(for: lines, in: container, with: Constant.StationPicker.bottomLineSeparation, to: line, with: 0, to: nil)
         
         // Add circlesContainer Contraints
         let circlesContainerVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[circlesContainer]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["circlesContainer" : circlesContainer])
@@ -246,7 +249,7 @@ class UIObjects: NSObject {
             circle.addSubview(numberLabel)
             
             // Add numberLabel Constraints
-            let numberLabelCenterX = NSLayoutConstraint(item: circle, attribute: .centerX, relatedBy: .equal, toItem: numberLabel, attribute: .centerX, multiplier: 1, constant: 0)
+            let numberLabelCenterX = NSLayoutConstraint(item: circle, attribute: .centerX, relatedBy: .equal, toItem: numberLabel, attribute: .centerX, multiplier: 1, constant: name == "1" ?  0.25 : 0)
             let numberLabelCenterY = NSLayoutConstraint(item: circle, attribute: .centerY, relatedBy: .equal, toItem: numberLabel, attribute: .centerY, multiplier: 1, constant: 0)
             circle.addConstraint(numberLabelCenterX)
             circle.addConstraint(numberLabelCenterY)
@@ -269,7 +272,7 @@ class UIObjects: NSObject {
     - returns: A [UIView](apple-reference-documentation://hsdIxI1kkd) that has all the circles for each Line element on the given array.
      
      */
-    static func createCircles(for lines: [Line], in view: UIView, with topConstant: CGFloat, to topObject: Any?) -> UIView {
+    static func createCircles(for lines: [Line], in view: UIView, with topConstant: CGFloat, to topObject: Any?, with sideConstant: CGFloat, to sideObject: Any?) -> UIView {
         
         // Create container
         let container = UIView()
@@ -277,7 +280,12 @@ class UIObjects: NSObject {
         view.addSubview(container)
         
         // Add container Constraints
-        let containerHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[container]", options: NSLayoutFormatOptions(), metrics: ["leftMargin" : Constant.StationPicker.leftMarginSeparation, "rightMargin" : Constant.StationPicker.rightMarginSeparation], views: ["container" : container])
+        var containerHorizontalConstraints: [NSLayoutConstraint]
+        if let sideObject = sideObject {
+            containerHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:[sideObject]-sideConstant-[container]", options: NSLayoutFormatOptions(), metrics: ["sideConstant" : sideConstant], views: ["sideObject" : sideObject, "container" : container])
+        } else {
+            containerHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-sideConstant-[container]", options: NSLayoutFormatOptions(), metrics: ["sideConstant" : sideConstant], views: ["container" : container])
+        }
         var containerVerticalConstraints: [NSLayoutConstraint]
         if let topObject = topObject {
             containerVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[topObject]-topConstant-[container]", options: NSLayoutFormatOptions(), metrics: ["topConstant" : topConstant], views: ["topObject" : topObject, "container" : container])
@@ -309,8 +317,8 @@ class UIObjects: NSObject {
                     currentCircleHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:[previousCircle]-[currentCircle]", options: NSLayoutFormatOptions(), metrics: nil, views: ["previousCircle" : circles[i - 1], "currentCircle" : currentCircle])
                 }
                 let currentCircleVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[currentCircle]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["currentCircle" : currentCircle])
-                view.addConstraints(currentCircleHorizontalConstraints)
-                view.addConstraints(currentCircleVerticalConstraints)
+                container.addConstraints(currentCircleHorizontalConstraints)
+                container.addConstraints(currentCircleVerticalConstraints)
                 circles.append(currentCircle)
             }
         }

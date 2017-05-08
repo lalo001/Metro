@@ -17,7 +17,13 @@ class PickerButton: UIButton {
         // Drawing code
     }
     */
-
+    
+    public enum Direction: Int {
+        case from = 0, to
+    }
+    
+    var direction: Direction?
+    
     override var intrinsicContentSize: CGSize {
         let titleWidth = titleLabel?.intrinsicContentSize.width ?? 0
         let imageWidth = imageView?.intrinsicContentSize.width ?? 0
